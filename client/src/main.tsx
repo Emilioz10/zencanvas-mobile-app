@@ -7,6 +7,12 @@ import superjson from "superjson";
 import App from "./App";
 import { getLoginUrl } from "./const";
 import "./index.css";
+import "./lib/i18n";
+
+// Set initial language and direction
+const language = localStorage.getItem('language') || 'en';
+document.documentElement.lang = language;
+document.documentElement.dir = language === 'he' ? 'rtl' : 'ltr';
 
 const queryClient = new QueryClient();
 

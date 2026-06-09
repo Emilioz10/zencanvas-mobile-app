@@ -1,4 +1,3 @@
-import { useAuth } from "@/_core/hooks/useAuth";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,8 +6,12 @@ import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DataBackup } from "@/components/DataBackup";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { useTranslation } from "react-i18next";
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const { user, loading: authLoading } = useAuth();
   const { data: nodes, isLoading: nodesLoading } = trpc.nodes.list.useQuery(
     {},
@@ -32,12 +35,15 @@ export default function Dashboard() {
             <h1>Welcome back, {user?.name || "there"}</h1>
             <p className="text-calm mt-2">Your unified knowledge and life management hub</p>
           </div>
-          <Link href="/canvas">
-            <Button className="gap-2">
-              <Plus className="w-4 h-4" />
-              New Node
-            </Button>
-          </Link>
+          <div className="flex gap-2">
+            <LanguageSwitcher />
+            <Link href="/canvas">
+              <Button className="gap-2">
+                <Plus className="w-4 h-4" />
+                New Node
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Quick Stats */}

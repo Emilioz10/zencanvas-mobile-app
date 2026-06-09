@@ -200,3 +200,56 @@
 - [x] Fall back to simpler heuristics if no AI available
 - [ ] Show clear UI about which AI is being used
 - [ ] Cache AI responses for offline access
+
+
+## Life Operating System Features (NEW)
+
+### Task Dependencies
+- [x] Create taskDependencies table in schema
+- [x] Add dependency query helpers
+- [x] Build TaskDependencyMap D3.js visualization
+- [ ] Implement dependency creation/deletion UI
+- [ ] Add dependency validation (prevent circular deps)
+- [ ] Show dependency status in task lists
+
+### Life Domains
+- [x] Create lifeDomains table in schema
+- [x] Build Life Domains page with default domains
+- [x] Add domain creation UI
+- [x] Link nodes to domains
+- [ ] Show domain-specific task views
+- [ ] Add domain filtering to graph
+- [ ] Create domain dashboards with stats
+
+### Node Metadata & Enhanced Properties
+- [x] Create nodeMetadata table with color, domain, effort, priority, limitations
+- [x] Build enhanced Node Editor UI with all controls
+- [x] Add color selection for visual organization
+- [x] Add effort and priority fields
+- [x] Add limitations and support needed fields
+- [ ] Implement metadata update mutations
+- [ ] Show metadata in list views
+
+### Life Skills Guides
+- [x] Create lifeSkillsGuides table
+- [x] Add guide creation procedures
+- [ ] Build guide editor with image/GIF support
+- [ ] Link guides to daily tasks
+- [ ] Create guide library UI
+- [ ] Add guide search and filtering
+
+### Data Backup & Export
+- [x] Build DataBackup component with export/import UI
+- [x] Mount DataBackup on Dashboard
+- [ ] Implement JSON export functionality
+- [ ] Implement JSON import functionality
+- [ ] Add cloud backup integration
+- [ ] Add automatic daily backups
+
+### Relationship Focus (People & Connections)
+- [ ] Add relationship type for people nodes
+- [ ] Build people management page
+- [ ] Add connection history tracking
+- [ ] Create relationship timeline
+- [ ] Add support tracking for relationships
+- [ ] Build relationship strength visualization
