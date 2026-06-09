@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
+import { AccessibilityAI } from "@/components/AccessibilityAI";
 
 export default function NodeDetail() {
   const { user } = useAuth();
@@ -252,6 +253,9 @@ export default function NodeDetail() {
                 </SelectContent>
               </Select>
             </div>
+
+            {/* Accessibility AI */}
+            <AccessibilityAI nodeBody={body} nodeType={type} />
 
             {/* Body */}
             <div>

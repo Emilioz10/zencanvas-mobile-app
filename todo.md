@@ -163,3 +163,40 @@
 - [x] Add task list rendering (via marked GFM)
 - [x] Add syntax highlighting for code blocks (via marked GFM)
 - [ ] Add emoji support
+
+
+## Multi-LLM Support & Accessibility AI (NEW)
+
+### Infrastructure
+- [x] Create LLM provider abstraction layer (unified interface)
+- [ ] Add configuration UI for LLM provider selection
+- [ ] Implement API key management (secure storage)
+- [x] Add provider health checks and fallback logic
+
+### Offline On-Device AI
+- [x] Integrate TensorFlow.js for lightweight models
+- [ ] Add ONNX Runtime support for model inference
+- [x] Implement local text classification model
+- [x] Add offline tagging and basic NLP
+
+### Cloud LLM Providers
+- [x] Add OpenRouter API integration
+- [x] Add Groq API integration
+- [x] Add Ollama local server support
+- [ ] Add Claude API integration
+- [x] Add fallback chain (try primary, fallback to secondary)
+
+### Accessibility-First AI Features
+- [x] **Expression Assistant**: Help users articulate vague thoughts clearly
+- [x] **Purpose Clarifier**: Identify and suggest node purpose (task/note/idea/reference)
+- [x] **Auto-Classifier**: Suggest node type, tags, and status
+- [x] **Content Structurer**: Break down complex content into organized sections
+- [x] **Relationship Suggester**: Find connections between nodes
+- [ ] **Simplifier**: Rewrite content in simpler language if needed
+
+### Graceful Degradation
+- [x] Detect offline/online status
+- [x] Use on-device AI when offline
+- [x] Fall back to simpler heuristics if no AI available
+- [ ] Show clear UI about which AI is being used
+- [ ] Cache AI responses for offline access
