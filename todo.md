@@ -143,3 +143,23 @@
 5. **Block time** at /timeline for daily planning
 6. **Quick capture** at /inbox for unprocessed items
 7. **Press Cmd/Ctrl + /** to see all keyboard shortcuts
+
+
+## RTL & Internationalization (NEW)
+- [x] Add RTL (right-to-left) CSS support for Hebrew
+- [x] Add language selector to node editor (English/Hebrew)
+- [x] Implement dir attribute on editor components
+- [ ] Add Hebrew UI translations for all pages
+- [ ] Add locale detection and persistence
+
+## GitHub Flavored Markdown (NEW)
+- [x] Integrate marked.js for GFM parsing
+- [x] Add wikilinks support [[node-title]]
+- [x] Add callouts (NOTE, WARNING, IMPORTANT, CAUTION, TIP)
+- [x] Create MarkdownEditor component with live preview
+- [x] Extract node references from wikilinks
+- [x] Add markdown tips and help in editor
+- [ ] Add table rendering support
+- [ ] Add task list rendering
+- [ ] Add syntax highlighting for code blocks
+- [ ] Add emoji support

@@ -116,12 +116,27 @@
 }
 
 @layer base {
-  * {
+  :root,
+  [dir="rtl"] {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground font-sans;
-    letter-spacing: -0.01em;
+    @apply bg-background text-foreground;
+  }
+
+  [dir="rtl"] {
+    direction: rtl;
+    text-align: right;
+  }
+
+  [dir="rtl"] input,
+  [dir="rtl"] textarea {
+    direction: rtl;
+    text-align: right;
+  }
+
+  [dir="rtl"] button {
+    direction: rtl;
   }
   
   /* Generous, readable typography */

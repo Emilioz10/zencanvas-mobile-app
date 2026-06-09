@@ -12,6 +12,7 @@ import { trpc } from "@/lib/trpc";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MarkdownEditor } from "@/components/MarkdownEditor";
 
 export default function NodeDetail() {
   const { user } = useAuth();
@@ -36,6 +37,8 @@ export default function NodeDetail() {
   const [tagInput, setTagInput] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [isSaving, setIsSaving] = useState(false);
+  const [dir, setDir] = useState<"ltr" | "rtl">("ltr");
+  const [linkedNodes, setLinkedNodes] = useState<string[]>([]);
 
   const updateMutation = trpc.nodes.update.useMutation();
   const deleteMutation = trpc.nodes.delete.useMutation();
@@ -236,14 +239,29 @@ export default function NodeDetail() {
               />
             </div>
 
+            {/* Language & Direction */}
+            <div>
+              <label className="text-sm font-medium mb-2 block">Language</label>
+              <Select value={dir} onValueChange={(value) => setDir(value as "ltr" | "rtl")}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ltr">English (LTR)</SelectItem>
+                  <SelectItem value="rtl">עברית (RTL)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
             {/* Body */}
             <div>
-              <label className="text-sm font-medium mb-2 block">Content</label>
-              <Textarea
-                placeholder="Write your note, task, or idea here..."
+              <label className="text-sm font-medium mb-2 block">Content (Markdown)</label>
+              <MarkdownEditor
                 value={body}
-                onChange={(e) => setBody(e.target.value)}
-                className="min-h-48 resize-none"
+                onChange={setBody}
+                placeholder="Write your note in Markdown..."
+                dir={dir}
+                onNodeReferencesChange={setLinkedNodes}
               />
             </div>
 
