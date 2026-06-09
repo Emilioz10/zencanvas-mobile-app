@@ -27,16 +27,18 @@
 - [ ] Add node inline editing from graph/list views
 
 ## Interactive Visual Graph Canvas
-- [ ] Choose graph visualization library (D3.js or similar)
-- [ ] Build canvas component with pan/zoom controls
-- [ ] Render nodes as draggable, interactive elements
+- [x] Choose graph visualization library (D3.js or similar)
+- [x] Build canvas component with pan/zoom controls
+- [x] Render nodes as draggable, interactive elements
 - [ ] Render edges with visible, readable link labels (relationship types)
-- [ ] Implement node click-to-open-editor interaction
+- [x] Implement node click-to-open-editor interaction
 - [ ] Add edge creation UI (drag from node to create link)
 - [ ] Implement edge deletion and relationship type editing
 - [ ] Add graph filtering (show/hide node types)
 - [ ] Build mini-graph preview component for dashboard
 - [x] Create Canvas page placeholder with zoom controls
+- [x] Integrate D3.js force-directed graph visualization
+- [x] Color nodes by type, opacity by status
 
 ## Daily Capture Inbox
 - [x] Build quick-add modal/drawer (keyboard shortcut accessible)
@@ -61,24 +63,24 @@
 - [ ] Build task filtering and sorting
 
 ## AI Features
-- [ ] Integrate AI relationship suggester (analyzes nodes, suggests links)
-- [ ] Build relationship suggestion UI with accept/reject
-- [ ] Integrate AI task decomposer (breaks down complex tasks)
-- [ ] Build task decomposition UI with subtask preview
+- [x] Integrate AI relationship suggester (analyzes nodes, suggests links)
+- [x] Build relationship suggestion UI with accept/reject
+- [x] Integrate AI task decomposer (breaks down complex tasks)
+- [x] Build task decomposition UI with subtask preview
 - [ ] Add "generate subtasks" button to task editor
 
 ## Polish & Accessibility
-- [ ] Ensure WCAG AA contrast ratios across all text
+- [x] Ensure WCAG AA contrast ratios across all text
 - [ ] Add keyboard navigation for all major flows
 - [ ] Implement focus indicators and keyboard shortcuts
-- [ ] Add loading states and error handling
-- [ ] Optimize animations (respect prefers-reduced-motion)
-- [ ] Test cross-domain navigation flows
-- [ ] Add empty states and onboarding hints
-- [ ] Refine typography and spacing for readability
+- [x] Add loading states and error handling
+- [x] Optimize animations (respect prefers-reduced-motion)
+- [x] Test cross-domain navigation flows
+- [x] Add empty states and onboarding hints
+- [x] Refine typography and spacing for readability
 
 ## Testing & Delivery
-- [ ] Write vitest tests for core mutations and queries
-- [ ] Test graph navigation and node linking
+- [x] Write vitest tests for core mutations and queries
+- [x] Test graph navigation and node linking
 - [ ] Test AI features with sample data
-- [ ] Create checkpoint and prepare for delivery
+- [x] Create checkpoint and prepare for delivery
