@@ -52,30 +52,31 @@
   --chart-3: var(--color-blue-600);
   --chart-4: var(--color-blue-700);
   --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
+  --radius: 0.75rem;
+  /* Calm light theme: soft, warm, accessible */
+  --background: oklch(0.97 0.001 286);
+  --foreground: oklch(0.22 0.02 260);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
+  --card-foreground: oklch(0.22 0.02 260);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  --popover-foreground: oklch(0.22 0.02 260);
+  --secondary: oklch(0.95 0.01 260);
+  --secondary-foreground: oklch(0.35 0.02 260);
+  --muted: oklch(0.88 0.005 286);
+  --muted-foreground: oklch(0.50 0.01 260);
+  --accent: oklch(0.62 0.22 260);
+  --accent-foreground: oklch(1 0 0);
+  --destructive: oklch(0.58 0.25 27);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.90 0.003 286);
+  --input: oklch(0.93 0.002 286);
+  --ring: oklch(0.62 0.22 260);
+  --sidebar: oklch(0.98 0.001 286);
+  --sidebar-foreground: oklch(0.22 0.02 260);
+  --sidebar-accent: oklch(0.62 0.22 260);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(0.90 0.003 286);
+  --sidebar-ring: oklch(0.62 0.22 260);
 }
 
 .dark {
@@ -83,34 +84,35 @@
   --primary-foreground: var(--color-blue-50);
   --sidebar-primary: var(--color-blue-500);
   --sidebar-primary-foreground: var(--color-blue-50);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
+  /* Calm dark theme: deep, soothing, accessible */
+  --background: oklch(0.15 0.01 260);
+  --foreground: oklch(0.88 0.01 260);
+  --card: oklch(0.22 0.01 260);
+  --card-foreground: oklch(0.88 0.01 260);
+  --popover: oklch(0.22 0.01 260);
+  --popover-foreground: oklch(0.88 0.01 260);
+  --secondary: oklch(0.28 0.01 260);
+  --secondary-foreground: oklch(0.75 0.01 260);
+  --muted: oklch(0.32 0.008 260);
+  --muted-foreground: oklch(0.65 0.01 260);
+  --accent: oklch(0.68 0.20 260);
+  --accent-foreground: oklch(0.15 0.01 260);
+  --destructive: oklch(0.60 0.22 27);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.28 0.008 260);
+  --input: oklch(0.28 0.008 260);
+  --ring: oklch(0.68 0.20 260);
   --chart-1: var(--color-blue-300);
   --chart-2: var(--color-blue-500);
   --chart-3: var(--color-blue-600);
   --chart-4: var(--color-blue-700);
   --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
+  --sidebar: oklch(0.22 0.01 260);
+  --sidebar-foreground: oklch(0.88 0.01 260);
+  --sidebar-accent: oklch(0.68 0.20 260);
+  --sidebar-accent-foreground: oklch(0.15 0.01 260);
+  --sidebar-border: oklch(0.28 0.008 260);
+  --sidebar-ring: oklch(0.68 0.20 260);
 }
 
 @layer base {
@@ -118,7 +120,32 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    letter-spacing: -0.01em;
+  }
+  
+  /* Generous, readable typography */
+  h1 {
+    @apply text-4xl font-semibold leading-tight tracking-tight;
+    letter-spacing: -0.02em;
+  }
+  h2 {
+    @apply text-3xl font-semibold leading-snug tracking-tight;
+    letter-spacing: -0.015em;
+  }
+  h3 {
+    @apply text-2xl font-semibold leading-snug;
+  }
+  h4 {
+    @apply text-xl font-semibold leading-normal;
+  }
+  p {
+    @apply text-base leading-relaxed;
+  }
+  
+  /* Visible focus indicators for accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background rounded;
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -173,5 +200,58 @@
       padding-right: 2rem;
       max-width: 1280px; /* Standard content width */
     }
+  }
+}
+
+/* Calm design utilities */
+@layer components {
+  .text-calm {
+    @apply text-muted-foreground;
+  }
+
+  .bg-soft {
+    @apply bg-muted/30;
+  }
+
+  .border-soft {
+    @apply border-border/50;
+  }
+
+  .shadow-calm {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+  }
+
+  .shadow-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  /* Generous spacing for whitespace */
+  .space-generous {
+    @apply space-y-8;
+  }
+
+  .gap-generous {
+    @apply gap-8;
+  }
+
+  /* Smooth transitions for calm interactions */
+  .transition-calm {
+    @apply transition-all duration-200 ease-out;
+  }
+
+  /* Responsive container padding */
+  .px-safe {
+    @apply px-4 sm:px-6 md:px-8;
+  }
+
+  .py-safe {
+    @apply py-6 sm:py-8 md:py-10;
+  }
+}
+
+/* Reduced motion support for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    @apply !transition-none !animate-none;
   }
 }
