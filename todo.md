@@ -159,7 +159,7 @@
 - [x] Create MarkdownEditor component with live preview
 - [x] Extract node references from wikilinks
 - [x] Add markdown tips and help in editor
-- [ ] Add table rendering support
-- [ ] Add task list rendering
-- [ ] Add syntax highlighting for code blocks
+- [x] Add table rendering support (via marked GFM)
+- [x] Add task list rendering (via marked GFM)
+- [x] Add syntax highlighting for code blocks (via marked GFM)
 - [ ] Add emoji support

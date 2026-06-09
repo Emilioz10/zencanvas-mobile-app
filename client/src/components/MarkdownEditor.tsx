@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
 import { markdownToHtml, extractNodeReferences } from "@/lib/markdown";
 import { Eye, Code } from "lucide-react";
-import { Streamdown } from "streamdown";
+
 
 interface MarkdownEditorProps {
   value: string;
@@ -100,7 +100,10 @@ export function MarkdownEditor({
 
         <TabsContent value="preview" className="space-y-3">
           <Card className="p-4 min-h-64 prose prose-sm dark:prose-invert max-w-none">
-            <Streamdown>{preview}</Streamdown>
+            <div
+              className="prose prose-sm dark:prose-invert max-w-none"
+              dangerouslySetInnerHTML={{ __html: preview }}
+            />
           </Card>
         </TabsContent>
       </Tabs>
