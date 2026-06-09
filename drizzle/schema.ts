@@ -26,21 +26,38 @@ export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;
 
 /**
+ * Life Domains: Categories for organizing life aspects
+ * Examples: health, relationships, finance, work, personal_growth, education, hobbies
+ */
+export const lifeDomains = mysqlTable("lifeDomains", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id),
+  name: varchar("name", { length: 64 }).notNull(),
+  description: text("description"),
+  color: varchar("color", { length: 32 }).default("#6366f1"),
+  icon: varchar("icon", { length: 64 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type LifeDomain = typeof lifeDomains.$inferSelect;
+export type InsertLifeDomain = typeof lifeDomains.$inferInsert;
+
+/**
  * Universal Node System: Every item (note, task, project, person, event, idea) is a first-class node
  * Nodes can be linked to any other node via the relationships table
  */
 export const nodes = mysqlTable("nodes", {
   id: int("id").autoincrement().primaryKey(),
   userId: int("userId").notNull().references(() => users.id),
-  /** Node type: task, note, project, person, event, idea, etc. */
+  /** Node type: task, note, project, person, event, idea, life_skill, etc. */
   type: varchar("type", { length: 32 }).notNull().default("note"),
-  /** Rich-text body content */
+  /** Rich-text body content (supports Markdown) */
   body: text("body"),
   /** JSON-encoded properties: status, tags, priority, dueDate, etc. */
   properties: text("properties"),
   /** Comma-separated tags for quick filtering */
   tags: text("tags"),
-  /** For tasks: status (inbox, next, someday, done) */
+  /** For tasks: status (inbox, next, someday, done, blocked, in_progress) */
   status: varchar("status", { length: 32 }).default("inbox"),
   /** For time blocks: start time (ISO string) */
   startTime: varchar("startTime", { length: 64 }),
@@ -50,12 +67,44 @@ export const nodes = mysqlTable("nodes", {
   canvasX: int("canvasX").default(0),
   /** Canvas position: y coordinate (for graph layout) */
   canvasY: int("canvasY").default(0),
+  /** Language: en or he (for RTL support) */
+  language: varchar("language", { length: 8 }).default("en"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
 
 export type Node = typeof nodes.$inferSelect;
 export type InsertNode = typeof nodes.$inferInsert;
+
+/**
+ * Enhanced Node Metadata: Store additional properties as JSON
+ * Includes: color, domain links, limitations, support needs, etc.
+ */
+export const nodeMetadata = mysqlTable("nodeMetadata", {
+  id: int("id").autoincrement().primaryKey(),
+  nodeId: int("nodeId").notNull().references(() => nodes.id, { onDelete: "cascade" }),
+  /** Color for visual identification (hex or pastel name) */
+  color: varchar("color", { length: 32 }).default("#f3f4f6"),
+  /** Link to life domain */
+  lifeDomainId: int("lifeDomainId").references(() => lifeDomains.id),
+  /** For people nodes: relationship type (friend, family, mentor, support, etc.) */
+  relationshipType: varchar("relationshipType", { length: 64 }),
+  /** For tasks: estimated effort (easy, medium, hard) */
+  effort: varchar("effort", { length: 32 }),
+  /** For tasks: priority (low, medium, high, critical) */
+  priority: varchar("priority", { length: 32 }).default("medium"),
+  /** For life-situation tasks: limitations or challenges */
+  limitations: text("limitations"),
+  /** Support needed: financial, emotional, medical, educational, etc. */
+  supportNeeded: text("supportNeeded"),
+  /** Custom JSON for extensibility */
+  customData: text("customData"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type NodeMetadata = typeof nodeMetadata.$inferSelect;
+export type InsertNodeMetadata = typeof nodeMetadata.$inferInsert;
 
 /**
  * Bi-directional Relationships: Typed links between any two nodes
@@ -78,6 +127,51 @@ export const relationships = mysqlTable("relationships", {
 
 export type Relationship = typeof relationships.$inferSelect;
 export type InsertRelationship = typeof relationships.$inferInsert;
+
+/**
+ * Task Dependencies: Links between tasks showing dependencies
+ * Example: "Task B depends on Task A" means A must be done before B
+ */
+export const taskDependencies = mysqlTable("taskDependencies", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id),
+  /** Task that depends on another */
+  dependentTaskId: int("dependentTaskId").notNull().references(() => nodes.id, { onDelete: "cascade" }),
+  /** Task that must be completed first */
+  dependsOnTaskId: int("dependsOnTaskId").notNull().references(() => nodes.id, { onDelete: "cascade" }),
+  /** Type: blocks, required_before, related_to */
+  type: varchar("type", { length: 32 }).default("required_before"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type TaskDependency = typeof taskDependencies.$inferSelect;
+export type InsertTaskDependency = typeof taskDependencies.$inferInsert;
+
+/**
+ * Life Skills Guides: Instructions for daily life tasks
+ * Example: How to wash dishes, fold clothes, manage anxiety
+ */
+export const lifeSkillsGuides = mysqlTable("lifeSkillsGuides", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id),
+  /** Reference to the task this guide is for */
+  taskId: int("taskId").references(() => nodes.id, { onDelete: "cascade" }),
+  title: varchar("title", { length: 255 }).notNull(),
+  description: text("description"),
+  /** JSON array of steps with text, images, and GIFs */
+  steps: text("steps"),
+  /** Difficulty level: easy, medium, hard */
+  difficulty: varchar("difficulty", { length: 32 }).default("medium"),
+  /** Estimated time in minutes */
+  estimatedTime: int("estimatedTime"),
+  /** JSON array of media URLs (images, GIFs) */
+  mediaUrls: text("mediaUrls"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type LifeSkillsGuide = typeof lifeSkillsGuides.$inferSelect;
+export type InsertLifeSkillsGuide = typeof lifeSkillsGuides.$inferInsert;
 
 /**
  * Suggested Relationships: AI-generated suggestions for missing connections

@@ -1,5 +1,6 @@
 import { COOKIE_NAME } from "@shared/const";
 import { aiRouter } from "./routers/ai";
+import { extendedRouter } from "./routers/extended";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
@@ -21,6 +22,10 @@ import {
 export const appRouter = router({
   system: systemRouter,
   ai: aiRouter,
+  lifeDomains: extendedRouter.lifeDomains,
+  nodeMetadata: extendedRouter.nodeMetadata,
+  taskDependencies: extendedRouter.taskDependencies,
+  lifeSkillsGuides: extendedRouter.lifeSkillsGuides,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
@@ -63,6 +68,15 @@ export const appRouter = router({
       }),
 
     /**
+     * Get a single node by ID (alias for get)
+     */
+    getById: protectedProcedure
+      .input(z.object({ id: z.number() }))
+      .query(async ({ ctx, input }) => {
+        return getNode(input.id, ctx.user.id);
+      }),
+
+    /**
      * Create a new node
      */
     create: protectedProcedure
@@ -89,6 +103,7 @@ export const appRouter = router({
       .input(
         z.object({
           id: z.number(),
+          type: z.string().optional(),
           body: z.string().optional(),
           properties: z.string().optional(),
           tags: z.string().optional(),
