@@ -5,6 +5,8 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
+import { KeyboardShortcutsHelp } from "./components/KeyboardShortcutsHelp";
 import Dashboard from "./pages/Dashboard";
 import Canvas from "./pages/Canvas";
 import Inbox from "./pages/Inbox";
@@ -13,8 +15,11 @@ import Timeline from "./pages/Timeline";
 import NodeDetail from "./pages/NodeDetail";
 
 function Router() {
+  const { showHelp, setShowHelp } = useKeyboardShortcuts();
   // make sure to consider if you need authentication for certain routes
   return (
+    <>
+      <KeyboardShortcutsHelp open={showHelp} onOpenChange={setShowHelp} />
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/dashboard"} component={Dashboard} />
@@ -28,6 +33,7 @@ function Router() {
       {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
+    </>
   );
 }
 
