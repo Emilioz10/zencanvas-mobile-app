@@ -13,6 +13,7 @@ import Inbox from "./pages/Inbox";
 import Tasks from "./pages/Tasks";
 import Timeline from "./pages/Timeline";
 import NodeDetail from "./pages/NodeDetail";
+import LifeDomains from "./pages/LifeDomains";
 
 function Router() {
   const { showHelp, setShowHelp } = useKeyboardShortcuts();
@@ -29,6 +30,7 @@ function Router() {
       <Route path={"/timeline"} component={Timeline} />
       <Route path={"/node/:id"} component={NodeDetail} />
       <Route path={"/node/new"} component={NodeDetail} />
+      <Route path={"/domains"} component={LifeDomains} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

@@ -6,6 +6,7 @@ import { Plus, Network, Clock, CheckSquare, Inbox } from "lucide-react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { Skeleton } from "@/components/ui/skeleton";
+import { DataBackup } from "@/components/DataBackup";
 
 export default function Dashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -99,6 +100,9 @@ export default function Dashboard() {
             </Button>
           </Link>
         </div>
+
+        {/* Data Backup */}
+        <DataBackup />
 
         {/* Recent Nodes */}
         <Card className="shadow-card">
