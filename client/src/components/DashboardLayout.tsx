@@ -26,10 +26,12 @@ import { CSSProperties, useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from './DashboardLayoutSkeleton';
 import { Button } from "./ui/button";
+import { useTranslation } from "react-i18next";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
-const menuItems = [
-  { icon: LayoutDashboard, label: "Page 1", path: "/" },
-  { icon: Users, label: "Page 2", path: "/some-path" },
+const getMenuItems = (t: any) => [
+  { icon: LayoutDashboard, label: t('nav.dashboard'), path: "/dashboard" },
+  { icon: Users, label: t('nav.domains'), path: "/domains" },
 ];
 
 const SIDEBAR_WIDTH_KEY = "sidebar-width";
@@ -42,6 +44,7 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const { t } = useTranslation();
   const [sidebarWidth, setSidebarWidth] = useState(() => {
     const saved = localStorage.getItem(SIDEBAR_WIDTH_KEY);
     return saved ? parseInt(saved, 10) : DEFAULT_WIDTH;
@@ -62,10 +65,10 @@ export default function DashboardLayout({
         <div className="flex flex-col items-center gap-8 p-8 max-w-md w-full">
           <div className="flex flex-col items-center gap-6">
             <h1 className="text-2xl font-semibold tracking-tight text-center">
-              Sign in to continue
+              {t('auth.signIn')}
             </h1>
             <p className="text-sm text-muted-foreground text-center max-w-sm">
-              Access to this dashboard requires authentication. Continue to launch the login flow.
+              {t('auth.welcome')}
             </p>
           </div>
           <Button
@@ -75,7 +78,7 @@ export default function DashboardLayout({
             size="lg"
             className="w-full shadow-lg hover:shadow-xl transition-all"
           >
-            Sign in
+            {t('auth.signIn')}
           </Button>
         </div>
       </div>
@@ -106,12 +109,14 @@ function DashboardLayoutContent({
   children,
   setSidebarWidth,
 }: DashboardLayoutContentProps) {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const [location, setLocation] = useLocation();
   const { state, toggleSidebar } = useSidebar();
   const isCollapsed = state === "collapsed";
   const [isResizing, setIsResizing] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const menuItems = getMenuItems(t);
   const activeMenuItem = menuItems.find(item => item.path === location);
   const isMobile = useIsMobile();
 
@@ -171,7 +176,7 @@ function DashboardLayoutContent({
               {!isCollapsed ? (
                 <div className="flex items-center gap-2 min-w-0">
                   <span className="font-semibold tracking-tight truncate">
-                    Navigation
+                    {t('settings.notifications')}
                   </span>
                 </div>
               ) : null}
@@ -221,12 +226,15 @@ function DashboardLayoutContent({
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem className="cursor-pointer">
+                  <LanguageSwitcher />
+                </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={logout}
                   className="cursor-pointer text-destructive focus:text-destructive"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>Sign out</span>
+                  <span>{t('auth.logout')}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

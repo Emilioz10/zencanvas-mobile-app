@@ -8,8 +8,10 @@ import { Plus, Archive, Trash2 } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 export default function Inbox() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { data: inboxNodes = [], refetch } = trpc.nodes.list.useQuery(
     { status: "inbox" },
@@ -26,7 +28,7 @@ export default function Inbox() {
 
   const handleAddToInbox = async () => {
     if (!body.trim()) {
-      toast.error("Please enter some content");
+      toast.error(t('common.error'));
       return;
     }
 
@@ -39,10 +41,10 @@ export default function Inbox() {
       });
       setBody("");
       setTitle("");
-      toast.success("Added to inbox");
+      toast.success(t('common.success'));
       refetch();
     } catch (error) {
-      toast.error("Failed to add to inbox");
+      toast.error(t('common.error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -54,20 +56,20 @@ export default function Inbox() {
         id: nodeId,
         status: "next",
       });
-      toast.success("Moved to Next Actions");
+      toast.success(t('common.success'));
       refetch();
     } catch (error) {
-      toast.error("Failed to process");
+      toast.error(t('common.error'));
     }
   };
 
   const handleDelete = async (nodeId: number) => {
     try {
       await deleteMutation.mutateAsync({ id: nodeId });
-      toast.success("Deleted");
+      toast.success(t('common.success'));
       refetch();
     } catch (error) {
-      toast.error("Failed to delete");
+      toast.error(t('common.error'));
     }
   };
 
@@ -76,21 +78,21 @@ export default function Inbox() {
       <div className="space-generous">
         {/* Header */}
         <div>
-          <h1>Daily Inbox</h1>
+          <h1>{t('nav.inbox')}</h1>
           <p className="text-calm mt-2">
-            Quickly capture thoughts, tasks, and notes. Process them later.
+            {t('inbox.placeholder')}
           </p>
         </div>
 
         {/* Quick Add */}
         <Card className="shadow-card">
           <CardHeader>
-            <CardTitle className="text-lg">Capture Something</CardTitle>
-            <CardDescription>Add to your inbox without organizing</CardDescription>
+            <CardTitle className="text-lg">{t('inbox.quickCapture')}</CardTitle>
+            <CardDescription>{t('inbox.captureNote')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Textarea
-              placeholder="What's on your mind? A task, idea, note, or question..."
+              placeholder={t('inbox.placeholder')}
               value={body}
               onChange={(e) => setBody(e.target.value)}
               className="min-h-24 resize-none"
@@ -101,7 +103,7 @@ export default function Inbox() {
               className="w-full gap-2"
             >
               <Plus className="w-4 h-4" />
-              Add to Inbox
+              {t('common.add')}
             </Button>
           </CardContent>
         </Card>
@@ -109,13 +111,13 @@ export default function Inbox() {
         {/* Inbox Items */}
         <div>
           <h2 className="text-2xl font-semibold mb-4">
-            Inbox ({inboxNodes.length})
+            {t('nav.inbox')} ({inboxNodes.length})
           </h2>
 
           {inboxNodes.length === 0 ? (
             <Card className="shadow-calm">
               <CardContent className="pt-8 pb-8 text-center">
-                <p className="text-calm">Your inbox is empty. Capture something to get started!</p>
+                <p className="text-calm">{t('common.loading')}</p>
               </CardContent>
             </Card>
           ) : (

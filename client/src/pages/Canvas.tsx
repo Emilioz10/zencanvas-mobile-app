@@ -8,8 +8,10 @@ import { GraphVisualization } from "@/components/GraphVisualization";
 import { GraphFilter } from "@/components/GraphFilter";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Canvas() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [, setLocation] = useLocation();
   const [visibleTypes, setVisibleTypes] = useState<string[]>(['task', 'note', 'project', 'person', 'event', 'idea']);
@@ -31,7 +33,7 @@ export default function Canvas() {
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-soft">
           <div>
-            <h1>Visual Graph Canvas</h1>
+            <h1>{t('nav.canvas')}</h1>
             <p className="text-calm text-sm mt-1">
               {filteredNodes.length} of {nodes.length} nodes visible
             </p>
@@ -41,7 +43,7 @@ export default function Canvas() {
             <Link href="/node/new">
               <Button className="gap-2">
                 <Plus className="w-4 h-4" />
-                New Node
+                {t('common.add')}
               </Button>
             </Link>
           </div>
@@ -55,7 +57,7 @@ export default function Canvas() {
         {/* Bottom Info */}
         <div className="mt-4 p-4 bg-soft/30 rounded-lg border border-soft text-sm text-calm">
           <p>
-            💡 <strong>Interactive Graph:</strong> Drag nodes to reposition, click to edit. Colors represent node types (blue=note, red=task, purple=project). Opacity shows status (full=active, faded=done).
+            💡 <strong>{t('common.search')}:</strong> {t('common.add')}
           </p>
         </div>
       </div>

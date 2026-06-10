@@ -33,15 +33,15 @@ export default function Dashboard() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1>Welcome back, {user?.name || "there"}</h1>
-            <p className="text-calm mt-2">Your unified knowledge and life management hub</p>
+            <h1>{t('auth.welcome')}, {user?.name || "there"}</h1>
+            <p className="text-calm mt-2">{t('common.search')}</p>
           </div>
           <div className="flex gap-2">
             <LanguageSwitcher />
             <Link href="/canvas">
               <Button className="gap-2">
                 <Plus className="w-4 h-4" />
-                New Node
+                {t('common.add')}
               </Button>
             </Link>
           </div>
@@ -51,31 +51,31 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-generous">
           <Card className="shadow-card">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-calm">Total Nodes</CardTitle>
+              <CardTitle className="text-sm font-medium text-calm">{t('common.search')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-semibold">{nodes?.length || 0}</div>
-              <p className="text-xs text-calm mt-1">Connected knowledge items</p>
+              <p className="text-xs text-calm mt-1">{t('common.add')}</p>
             </CardContent>
           </Card>
 
           <Card className="shadow-card">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-calm">Active Tasks</CardTitle>
+              <CardTitle className="text-sm font-medium text-calm">{t('tasks.nextActions')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-semibold">{taskCount}</div>
-              <p className="text-xs text-calm mt-1">Next actions and projects</p>
+              <p className="text-xs text-calm mt-1">{t('tasks.projects')}</p>
             </CardContent>
           </Card>
 
           <Card className="shadow-card">
             <CardHeader className="pb-3">
-              <CardTitle className="text-sm font-medium text-calm">Notes</CardTitle>
+              <CardTitle className="text-sm font-medium text-calm">{t('nodeEditor.tags')}</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-3xl font-semibold">{noteCount}</div>
-              <p className="text-xs text-calm mt-1">Captured knowledge</p>
+              <p className="text-xs text-calm mt-1">{t('inbox.captureNote')}</p>
             </CardContent>
           </Card>
         </div>
@@ -85,25 +85,25 @@ export default function Dashboard() {
           <Link href="/canvas">
             <Button variant="outline" className="w-full h-auto flex-col gap-2 py-4">
               <Network className="w-5 h-5" />
-              <span className="text-xs">Canvas</span>
+              <span className="text-xs">{t('nav.canvas')}</span>
             </Button>
           </Link>
           <Link href="/inbox">
             <Button variant="outline" className="w-full h-auto flex-col gap-2 py-4">
               <Inbox className="w-5 h-5" />
-              <span className="text-xs">Inbox</span>
+              <span className="text-xs">{t('nav.inbox')}</span>
             </Button>
           </Link>
           <Link href="/tasks">
             <Button variant="outline" className="w-full h-auto flex-col gap-2 py-4">
               <CheckSquare className="w-5 h-5" />
-              <span className="text-xs">Tasks</span>
+              <span className="text-xs">{t('nav.tasks')}</span>
             </Button>
           </Link>
           <Link href="/timeline">
             <Button variant="outline" className="w-full h-auto flex-col gap-2 py-4">
               <Clock className="w-5 h-5" />
-              <span className="text-xs">Timeline</span>
+              <span className="text-xs">{t('nav.timeline')}</span>
             </Button>
           </Link>
         </div>
@@ -117,8 +117,8 @@ export default function Dashboard() {
         {/* Recent Nodes */}
         <Card className="shadow-card">
           <CardHeader>
-            <CardTitle>Recent Items</CardTitle>
-            <CardDescription>Your most recently created or updated nodes</CardDescription>
+            <CardTitle>{t('common.add')}</CardTitle>
+            <CardDescription>{t('inbox.captureNote')}</CardDescription>
           </CardHeader>
           <CardContent>
             {nodesLoading ? (

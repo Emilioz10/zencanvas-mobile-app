@@ -9,8 +9,10 @@ import { trpc } from "@/lib/trpc";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 export default function Tasks() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { data: allTasks = [], refetch } = trpc.nodes.list.useQuery(
     { type: "task" },
@@ -33,9 +35,9 @@ export default function Tasks() {
         status: newStatus,
       });
       refetch();
-      toast.success(`Task moved to ${newStatus}`);
+      toast.success(t('common.success'));
     } catch (error) {
-      toast.error("Failed to update task");
+      toast.error(t('common.error'));
     }
   };
 
@@ -74,13 +76,13 @@ export default function Tasks() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1>Tasks & Projects</h1>
-            <p className="text-calm mt-2">GTD-inspired task management</p>
+            <h1>{t('nav.tasks')}</h1>
+            <p className="text-calm mt-2">{t('tasks.projects')}</p>
           </div>
           <Link href="/node/new">
             <Button className="gap-2">
               <Plus className="w-4 h-4" />
-              New Task
+              {t('tasks.addTask')}
             </Button>
           </Link>
         </div>
@@ -89,19 +91,19 @@ export default function Tasks() {
         <Tabs defaultValue="next" className="w-full">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="inbox">
-              Inbox
+              {t('tasks.inbox')}
               <span className="ml-1 text-xs">{tasks.inbox.length}</span>
             </TabsTrigger>
             <TabsTrigger value="next">
-              Next
+              {t('tasks.nextActions')}
               <span className="ml-1 text-xs">{tasks.next.length}</span>
             </TabsTrigger>
             <TabsTrigger value="someday">
-              Someday
+              {t('tasks.someday')}
               <span className="ml-1 text-xs">{tasks.someday.length}</span>
             </TabsTrigger>
             <TabsTrigger value="done">
-              Done
+              {t('tasks.done')}
               <span className="ml-1 text-xs">{tasks.done.length}</span>
             </TabsTrigger>
           </TabsList>
@@ -111,7 +113,7 @@ export default function Tasks() {
             {tasks.inbox.length === 0 ? (
               <Card className="shadow-calm">
                 <CardContent className="pt-8 pb-8 text-center">
-                  <p className="text-calm">No tasks in inbox</p>
+                  <p className="text-calm">{t('common.loading')}</p>
                 </CardContent>
               </Card>
             ) : (
@@ -124,7 +126,7 @@ export default function Tasks() {
             {tasks.next.length === 0 ? (
               <Card className="shadow-calm">
                 <CardContent className="pt-8 pb-8 text-center">
-                  <p className="text-calm">No next actions. Add one to get started!</p>
+                  <p className="text-calm">{t('common.loading')}</p>
                 </CardContent>
               </Card>
             ) : (
@@ -137,7 +139,7 @@ export default function Tasks() {
             {tasks.someday.length === 0 ? (
               <Card className="shadow-calm">
                 <CardContent className="pt-8 pb-8 text-center">
-                  <p className="text-calm">No someday/maybe tasks</p>
+                  <p className="text-calm">{t('tasks.someday')}</p>
                 </CardContent>
               </Card>
             ) : (
@@ -150,7 +152,7 @@ export default function Tasks() {
             {tasks.done.length === 0 ? (
               <Card className="shadow-calm">
                 <CardContent className="pt-8 pb-8 text-center">
-                  <p className="text-calm">No completed tasks yet</p>
+                  <p className="text-calm">{t('tasks.done')}</p>
                 </CardContent>
               </Card>
             ) : (

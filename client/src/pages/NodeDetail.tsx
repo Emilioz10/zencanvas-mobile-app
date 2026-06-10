@@ -14,8 +14,10 @@ import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MarkdownEditor } from "@/components/MarkdownEditor";
 import { AccessibilityAI } from "@/components/AccessibilityAI";
+import { useTranslation } from "react-i18next";
 
 export default function NodeDetail() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const params = useParams();
   const [, setLocation] = useLocation();
@@ -76,7 +78,7 @@ export default function NodeDetail() {
 
   const handleSave = async () => {
     if (!body.trim() && !isNewNode) {
-      toast.error("Node cannot be empty");
+      toast.error(t('common.error'));
       return;
     }
 
@@ -93,7 +95,7 @@ export default function NodeDetail() {
           tags: tagsStr,
           properties,
         });
-        toast.success("Node created");
+        toast.success(t('common.success'));
         setLocation("/dashboard");
       } else if (nodeId) {
         await updateMutation.mutateAsync({
@@ -103,10 +105,10 @@ export default function NodeDetail() {
           tags: tagsStr,
           properties,
         });
-        toast.success("Node saved");
+        toast.success(t('common.success'));
       }
     } catch (error) {
-      toast.error("Failed to save node");
+      toast.error(t('common.error'));
     } finally {
       setIsSaving(false);
     }
@@ -114,14 +116,14 @@ export default function NodeDetail() {
 
   const handleDelete = async () => {
     if (!nodeId || isNewNode) return;
-    if (!confirm("Are you sure? This will delete the node and its connections.")) return;
+    if (!confirm(t('common.delete'))) return;
 
     try {
       await deleteMutation.mutateAsync({ id: nodeId });
-      toast.success("Node deleted");
+      toast.success(t('common.success'));
       setLocation("/dashboard");
     } catch (error) {
-      toast.error("Failed to delete node");
+      toast.error(t('common.error'));
     }
   };
 
@@ -145,33 +147,33 @@ export default function NodeDetail() {
           <Link href="/dashboard">
             <Button variant="ghost" size="sm" className="gap-2">
               <ArrowLeft className="w-4 h-4" />
-              Back
+              {t('common.cancel')}
             </Button>
           </Link>
-          <h1>{isNewNode ? "New Node" : "Edit Node"}</h1>
+          <h1>{isNewNode ? t('common.create') : t('common.edit')}</h1>
         </div>
 
         {/* Node Editor */}
         <Card className="shadow-card">
           <CardHeader>
-            <CardTitle>Node Details</CardTitle>
+            <CardTitle>{t('nodeEditor.title')}</CardTitle>
             <CardDescription>
-              {isNewNode ? "Create a new node to add to your knowledge graph" : "Edit this node's content and properties"}
+              {isNewNode ? t('common.create') : t('common.edit')}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Type and Status */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium mb-2 block">Type</label>
+                <label className="text-sm font-medium mb-2 block">{t('nodeEditor.selectType')}</label>
                 <Select value={type} onValueChange={setType}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="note">Note</SelectItem>
-                    <SelectItem value="task">Task</SelectItem>
-                    <SelectItem value="project">Project</SelectItem>
+                    <SelectItem value="note">{t('nodeEditor.selectType')}</SelectItem>
+                    <SelectItem value="task">{t('nav.tasks')}</SelectItem>
+                    <SelectItem value="project">{t('tasks.projects')}</SelectItem>
                     <SelectItem value="person">Person</SelectItem>
                     <SelectItem value="event">Event</SelectItem>
                     <SelectItem value="idea">Idea</SelectItem>

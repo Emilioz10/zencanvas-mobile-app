@@ -6,8 +6,10 @@ import { Plus, Clock } from "lucide-react";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Timeline() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { data: nodes = [] } = trpc.nodes.list.useQuery({}, { enabled: !!user });
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
@@ -27,13 +29,13 @@ export default function Timeline() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1>Time Blocking</h1>
-            <p className="text-calm mt-2">Visual daily timeline for scheduling</p>
+            <h1>{t('nav.timeline')}</h1>
+            <p className="text-calm mt-2">{t('timeline.duration')}</p>
           </div>
           <Link href="/node/new">
             <Button className="gap-2">
               <Plus className="w-4 h-4" />
-              New Time Block
+              {t('timeline.addTimeBlock')}
             </Button>
           </Link>
         </div>
@@ -41,7 +43,7 @@ export default function Timeline() {
         {/* Date Selector */}
         <Card className="shadow-card">
           <CardHeader className="pb-3">
-            <CardTitle className="text-sm">Select Date</CardTitle>
+            <CardTitle className="text-sm">{t('timeline.today')}</CardTitle>
           </CardHeader>
           <CardContent>
             <input
