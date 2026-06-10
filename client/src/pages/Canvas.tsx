@@ -1,4 +1,3 @@
-import { useAuth } from "@/_core/hooks/useAuth";
 import DashboardLayout from "@/components/DashboardLayout";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -6,14 +5,24 @@ import { Plus } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { GraphVisualization } from "@/components/GraphVisualization";
+import { GraphFilter } from "@/components/GraphFilter";
+import { useAuth } from "@/_core/hooks/useAuth";
+import { useState } from "react";
 
 export default function Canvas() {
   const { user } = useAuth();
   const [, setLocation] = useLocation();
+  const [visibleTypes, setVisibleTypes] = useState<string[]>(['task', 'note', 'project', 'person', 'event', 'idea']);
   const { data: nodes = [] } = trpc.nodes.list.useQuery({}, { enabled: !!user });
+
+  const filteredNodes = nodes.filter(n => visibleTypes.includes(n.type));
 
   const handleNodeClick = (nodeId: number) => {
     setLocation(`/node/${nodeId}`);
+  };
+
+  const handleFilterChange = (types: string[]) => {
+    setVisibleTypes(types);
   };
 
   return (
@@ -24,15 +33,18 @@ export default function Canvas() {
           <div>
             <h1>Visual Graph Canvas</h1>
             <p className="text-calm text-sm mt-1">
-              {nodes.length} nodes connected across your knowledge graph
+              {filteredNodes.length} of {nodes.length} nodes visible
             </p>
           </div>
-          <Link href="/node/new">
-            <Button className="gap-2">
-              <Plus className="w-4 h-4" />
-              New Node
-            </Button>
-          </Link>
+          <div className="flex gap-2">
+            <GraphFilter onFilterChange={handleFilterChange} />
+            <Link href="/node/new">
+              <Button className="gap-2">
+                <Plus className="w-4 h-4" />
+                New Node
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Canvas Area */}

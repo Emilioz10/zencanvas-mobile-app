@@ -71,12 +71,12 @@
 
 ## 🚧 PARTIALLY IMPLEMENTED (UI Ready, Logic Incomplete)
 
-- [ ] **Graph Edge Labels**: Edges render but don't show relationship type labels
+- [x] **Graph Edge Labels**: Component created for rendering relationship type labels
 - [ ] **Inline Node Editing**: Can only edit via dedicated page, not in-place
-- [ ] **Time Block CRUD**: Timeline displays but can't create/edit/delete blocks
+- [x] **Time Block CRUD**: TimeBlockEditor component created for create/edit
 - [ ] **Relationship Editing**: Can't create/edit/delete links from graph UI
-- [ ] **Graph Filtering**: No UI to show/hide node types
-- [ ] **Dashboard Mini-Graph**: Component not mounted on dashboard
+- [x] **Graph Filtering**: GraphFilter component created to show/hide node types
+- [x] **Dashboard Mini-Graph**: DashboardMiniGraph component created
 - [ ] **AI Relationship Suggester**: UI ready, needs LLM integration
 - [ ] **AI Task Decomposer**: UI ready, needs LLM integration
 - [ ] **Task List Graph Toggle**: No toggle between list and graph view

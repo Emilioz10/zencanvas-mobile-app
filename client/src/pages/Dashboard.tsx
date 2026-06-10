@@ -7,6 +7,7 @@ import { trpc } from "@/lib/trpc";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DataBackup } from "@/components/DataBackup";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { DashboardMiniGraph } from "@/components/DashboardMiniGraph";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { useTranslation } from "react-i18next";
 
@@ -109,6 +110,9 @@ export default function Dashboard() {
 
         {/* Data Backup */}
         <DataBackup />
+
+        {/* Knowledge Graph Preview */}
+        <DashboardMiniGraph />
 
         {/* Recent Nodes */}
         <Card className="shadow-card">
