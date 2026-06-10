@@ -259,9 +259,19 @@ const resources = {
   },
 };
 
+// Detect browser language preference
+const getBrowserLanguage = (): 'he' | 'en' => {
+  const stored = localStorage.getItem('language');
+  if (stored === 'he' || stored === 'en') return stored;
+  
+  const browserLang = navigator.language?.toLowerCase() || 'en';
+  if (browserLang.startsWith('he')) return 'he';
+  return 'en';
+};
+
 i18n.use(initReactI18next).init({
   resources,
-  lng: localStorage.getItem('language') || 'en',
+  lng: getBrowserLanguage(),
   fallbackLng: 'en',
   interpolation: {
     escapeValue: false,

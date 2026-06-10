@@ -7,8 +7,10 @@ import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { useRef, useState } from "react";
 import { Download, Upload } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export function DataBackup() {
+  const { t } = useTranslation();
   const { data: nodes } = trpc.nodes.list.useQuery({ type: undefined, status: undefined });
   const { data: relationships } = trpc.relationships.forNode.useQuery({ nodeId: 1 });
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -45,9 +47,9 @@ export function DataBackup() {
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
 
-      toast.success("Data exported successfully");
+      toast.success(t('common.success'));
     } catch (error) {
-      toast.error("Failed to export data");
+      toast.error(t('common.error'));
     } finally {
       setIsExporting(false);
     }
@@ -68,7 +70,7 @@ export function DataBackup() {
 
       // Validate backup format
       if (!backupData.version || !Array.isArray(backupData.nodes)) {
-        toast.error("Invalid backup file format");
+        toast.error(t('common.error'));
         return;
       }
 
@@ -83,7 +85,7 @@ export function DataBackup() {
       // For now, just show the summary
       console.log("Backup data:", backupData);
     } catch (error) {
-      toast.error("Failed to read backup file");
+      toast.error(t('common.error'));
     } finally {
       setIsImporting(false);
       if (fileInputRef.current) {
@@ -94,32 +96,32 @@ export function DataBackup() {
 
   return (
     <Card className="p-6 space-y-4">
-      <h3 className="text-lg font-semibold">Data Backup & Restore</h3>
+      <h3 className="text-lg font-semibold">{t('settings.dataBackup')}</h3>
 
       <div className="grid grid-cols-2 gap-4">
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="outline" className="flex items-center gap-2">
               <Download className="w-4 h-4" />
-              Export Data
+              {t('settings.export')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Export Your Data</DialogTitle>
+              <DialogTitle>{t('settings.export')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              <p className="text-sm text-gray-600">
-                Download all your nodes, relationships, and metadata as a JSON file. You can use this to:
+              <p className="text-sm text-calm">
+                {t('common.add')}
               </p>
-              <ul className="text-sm text-gray-600 list-disc list-inside space-y-1">
-                <li>Create a local backup</li>
-                <li>Transfer data to another account</li>
-                <li>Analyze your data externally</li>
-                <li>Archive your knowledge</li>
+              <ul className="text-sm text-calm list-disc list-inside space-y-1">
+                <li>{t('common.add')}</li>
+                <li>{t('common.add')}</li>
+                <li>{t('common.add')}</li>
+                <li>{t('common.add')}</li>
               </ul>
-              <Button onClick={handleExport} disabled={isExporting} className="w-full bg-blue-600">
-                {isExporting ? "Exporting..." : "Download Backup"}
+              <Button onClick={handleExport} disabled={isExporting} className="w-full">
+                {isExporting ? t('common.loading') : t('settings.export')}
               </Button>
             </div>
           </DialogContent>
@@ -129,16 +131,16 @@ export function DataBackup() {
           <DialogTrigger asChild>
             <Button variant="outline" className="flex items-center gap-2">
               <Upload className="w-4 h-4" />
-              Import Data
+              {t('settings.import')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Import Your Data</DialogTitle>
+              <DialogTitle>{t('settings.import')}</DialogTitle>
             </DialogHeader>
             <div className="space-y-4">
-              <p className="text-sm text-gray-600">
-                Upload a previously exported JSON backup file to restore your data.
+              <p className="text-sm text-calm">
+                {t('common.add')}
               </p>
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
                 <Input

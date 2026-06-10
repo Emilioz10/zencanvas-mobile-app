@@ -149,8 +149,9 @@
 - [x] Add RTL (right-to-left) CSS support for Hebrew
 - [x] Add language selector to node editor (English/Hebrew)
 - [x] Implement dir attribute on editor components
-- [ ] Add Hebrew UI translations for all pages
-- [ ] Add locale detection and persistence
+- [x] Add Hebrew UI translations for all pages (Home, Dashboard, Canvas, Inbox, Tasks, Timeline, NodeDetail, LifeDomains)
+- [x] Add locale detection and persistence (browser language detection + localStorage)
+- [x] Translate page-mounted components (DataBackup, DashboardMiniGraph, GraphFilter, AccessibilityAI, TimeBlockEditor)
 
 ## GitHub Flavored Markdown (NEW)
 - [x] Integrate marked.js for GFM parsing

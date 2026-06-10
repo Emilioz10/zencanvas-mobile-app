@@ -8,6 +8,8 @@ import { trpc } from "@/lib/trpc";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslation } from "react-i18next";
+import DashboardLayout from "@/components/DashboardLayout";
 
 const DEFAULT_DOMAINS = [
   { name: "Health & Wellness", color: "#10b981", icon: "🏥" },
@@ -21,6 +23,7 @@ const DEFAULT_DOMAINS = [
 ];
 
 export default function LifeDomains() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { data: domains, isLoading } = trpc.lifeDomains.list.useQuery();
   const createMutation = trpc.lifeDomains.create.useMutation();
@@ -31,7 +34,7 @@ export default function LifeDomains() {
 
   const handleCreate = async () => {
     if (!newDomain.trim()) {
-      toast.error("Domain name is required");
+      toast.error(t('common.error'));
       return;
     }
 
@@ -40,12 +43,12 @@ export default function LifeDomains() {
         name: newDomain,
         color: selectedColor,
       });
-      toast.success("Domain created successfully");
+      toast.success(t('common.success'));
       setNewDomain("");
       setSelectedColor("#6366f1");
       setIsOpen(false);
     } catch (error) {
-      toast.error("Failed to create domain");
+      toast.error(t('common.error'));
     }
   };
 
@@ -63,34 +66,35 @@ export default function LifeDomains() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-4xl font-bold">Life Domains</h1>
-          <p className="text-gray-600 mt-2">
-            Organize your life into meaningful domains. Every node belongs to a domain.
-          </p>
-        </div>
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <Button className="bg-blue-600 hover:bg-blue-700">+ New Domain</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create New Life Domain</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <Label>Domain Name</Label>
-                <Input
-                  value={newDomain}
-                  onChange={(e) => setNewDomain(e.target.value)}
-                  placeholder="e.g., Health & Wellness"
-                />
+    <DashboardLayout>
+      <div className="max-w-6xl mx-auto space-y-8">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-4xl font-bold">{t('nav.domains')}</h1>
+            <p className="text-calm mt-2">
+              {t('common.add')}
+            </p>
+          </div>
+          <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+              <Button>{t('common.add')}</Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{t('common.create')}</DialogTitle>
+              </DialogHeader>
+              <div className="space-y-4">
+                <div>
+                  <Label>{t('common.add')}</Label>
+                  <Input
+                    value={newDomain}
+                    onChange={(e) => setNewDomain(e.target.value)}
+                    placeholder={t('common.add')}
+                  />
               </div>
 
               <div>
-                <Label>Color</Label>
+                <Label>{t('common.edit')}</Label>
                 <div className="flex gap-3 flex-wrap">
                   {[
                     "#10b981",
@@ -158,15 +162,14 @@ export default function LifeDomains() {
         </div>
       )}
 
-      {/* Info Section */}
-      <Card className="p-6 bg-blue-50 border-blue-200">
-        <h3 className="font-semibold text-lg mb-2">About Life Domains</h3>
-        <p className="text-gray-700">
-          Life domains help you organize all aspects of your life. Each node you create can be linked to a domain,
-          making it easy to see how different areas of your life are connected. For example, a "Doctor Appointment"
-          task belongs to the Health domain, while a "Team Meeting" belongs to Work & Career.
-        </p>
-      </Card>
-    </div>
+        {/* Info Section */}
+        <Card className="p-6 bg-blue-50 border-blue-200">
+          <h3 className="font-semibold text-lg mb-2">{t('common.add')}</h3>
+          <p className="text-calm">
+            {t('common.add')}
+          </p>
+        </Card>
+      </div>
+    </DashboardLayout>
   );
 }
