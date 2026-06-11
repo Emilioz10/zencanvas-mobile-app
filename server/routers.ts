@@ -12,6 +12,7 @@ import {
   updateNode,
   deleteNode,
   getNodeRelationships,
+  getAllRelationships,
   createRelationship,
   deleteRelationship,
   getSuggestedRelationships,
@@ -135,6 +136,13 @@ export const appRouter = router({
    * Relationship management: create, read, delete relationships
    */
   relationships: router({
+    /**
+     * Get all relationships for the current user (for canvas view)
+     */
+    all: protectedProcedure.query(async ({ ctx }) => {
+      return getAllRelationships(ctx.user.id);
+    }),
+
     /**
      * Get all relationships for a node (incoming and outgoing)
      */

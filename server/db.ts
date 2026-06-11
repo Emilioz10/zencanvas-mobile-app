@@ -265,6 +265,18 @@ export async function deleteRelationship(
 }
 
 /**
+ * Get all relationships for a user (for canvas view)
+ */
+export async function getAllRelationships(userId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db
+    .select()
+    .from(relationships)
+    .where(eq(relationships.userId, userId));
+}
+
+/**
  * Get all suggested relationships for a user
  */
 export async function getSuggestedRelationships(

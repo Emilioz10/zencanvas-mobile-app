@@ -254,3 +254,17 @@
 - [ ] Create relationship timeline
 - [ ] Add support tracking for relationships
 - [ ] Build relationship strength visualization
+
+## Canvas Redesign (URGENT)
+- [x] Replace D3.js force-directed graph with visual card-based canvas (ReactFlow)
+- [x] Cards display node content (title, type, tags, status) in styled tiles
+- [x] Connection lines drawn between linked cards with labels
+- [x] Drag-to-reposition cards on the canvas (positions persisted to DB)
+- [x] Click card to open node detail
+- [x] Filter cards by type/status
+- [x] Zoom and pan the canvas
+- [x] Add new node button on canvas
+- [x] Connection lines show relationship type label
+- [x] Hebrew RTL support in card content
+- [x] Drag handle between two cards to create a new connection
+- [x] MiniMap for overview navigation
