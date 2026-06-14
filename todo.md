@@ -268,3 +268,19 @@
 - [x] Hebrew RTL support in card content
 - [x] Drag handle between two cards to create a new connection
 - [x] MiniMap for overview navigation
+
+## Infinite Canvas v2 (canvs.io + tasks-map style)
+- [x] Replace ReactFlow with custom infinite canvas (dot-grid background)
+- [x] Left vertical toolbar (select / sticky note / task card tools)
+- [x] Sticky note cards (yellow, folded corner)
+- [x] Task cards with status dot, priority emoji, tags
+- [x] Directed SVG bezier arrows with labels between cards
+- [x] Blocking edges shown in red dashed style
+- [x] Drag to reposition cards (smooth, persisted)
+- [x] Draw connection by dragging from right handle to another card
+- [x] Delete selected edge via toolbar
+- [x] Unlinked nodes side panel
+- [x] Filter pills by node type
+- [x] Create node dialog (title, status, body)
+- [x] Zoom indicator bottom-right
+- [x] Auto RTL detection in card titles/body
