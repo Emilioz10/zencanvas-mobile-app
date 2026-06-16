@@ -284,3 +284,28 @@
 - [x] Create node dialog (title, status, body)
 - [x] Zoom indicator bottom-right
 - [x] Auto RTL detection in card titles/body
+
+## PWA Mobile Rebuild (COMPLETE — Android tablet + phone)
+- [x] Add PWA manifest.json (name, icons, display:standalone, orientation:any)
+- [x] Add meta viewport and mobile-first CSS (no tap delay, touch-action, safe-area)
+- [x] Remove all graph/D3/ReactFlow code (CardCanvas + InfiniteCanvas deleted)
+- [x] Build touch-native infinite canvas (pointer events: pan + pinch-zoom)
+- [x] Draggable cards with touch (pointer capture, no mouse-only events)
+- [x] Sticky note card (tap to edit inline in bottom sheet)
+- [x] Task card (title, status, tags, body)
+- [x] Image card (upload + display image on canvas)
+- [x] Document/file card (attach PDF/doc, show icon + name)
+- [x] SVG bezier connection arrows between cards with labels
+- [x] Draw connection: drag from purple handle to another card
+- [x] Bottom mobile toolbar (large touch targets: Select / פתק / משימה / קובץ / מחק)
+- [x] Card creation bottom sheet (title, body, status)
+- [x] Inline text editing on canvas (tap card → bottom sheet editor)
+- [x] File upload to S3 storage via /api/upload
+- [x] Sync all card positions, content, connections to backend (tRPC)
+- [x] Load canvas state on app open
+- [x] Zoom +/- + % indicator + reset button
+- [x] Delete card/edge via toolbar button
+- [x] Dot-grid background
+- [x] Filter pills by node type
+- [x] Hebrew Heebo font + RTL auto-detection in cards
+- [x] Schema extended: canvasWidth, canvasHeight, cardColor, attachmentUrl, attachmentType, attachmentName

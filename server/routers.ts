@@ -90,6 +90,15 @@ export const appRouter = router({
           status: z.string().optional(),
           startTime: z.string().optional(),
           endTime: z.string().optional(),
+          canvasX: z.number().optional(),
+          canvasY: z.number().optional(),
+          canvasWidth: z.number().optional(),
+          canvasHeight: z.number().optional(),
+          cardColor: z.string().optional(),
+          attachmentUrl: z.string().optional(),
+          attachmentType: z.string().optional(),
+          attachmentName: z.string().optional(),
+          language: z.string().optional(),
         })
       )
       .mutation(async ({ ctx, input }) => {
@@ -113,6 +122,13 @@ export const appRouter = router({
           endTime: z.string().optional(),
           canvasX: z.number().optional(),
           canvasY: z.number().optional(),
+          canvasWidth: z.number().optional(),
+          canvasHeight: z.number().optional(),
+          cardColor: z.string().optional(),
+          attachmentUrl: z.string().optional(),
+          attachmentType: z.string().optional(),
+          attachmentName: z.string().optional(),
+          language: z.string().optional(),
         })
       )
       .mutation(async ({ ctx, input }) => {

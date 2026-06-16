@@ -270,3 +270,46 @@
     @apply !transition-none !animate-none;
   }
 }
+
+/* ── Mobile PWA optimizations ─────────────────────────────────────────────── */
+
+/* Prevent 300ms tap delay on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Canvas elements need free touch-action */
+[data-canvas-root] {
+  touch-action: none;
+}
+
+/* Safe area insets for notched phones */
+body {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Hebrew font support */
+:lang(he), [dir="rtl"] {
+  font-family: "Heebo", "Arial Hebrew", "Arial", sans-serif;
+}
+
+/* Prevent text selection during canvas drag */
+.canvas-no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Smooth momentum scrolling on iOS */
+.scroll-smooth-ios {
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+}
+
+/* Bottom toolbar safe area */
+.bottom-toolbar {
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+}

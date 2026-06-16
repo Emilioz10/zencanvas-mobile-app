@@ -63,10 +63,22 @@ export const nodes = mysqlTable("nodes", {
   startTime: varchar("startTime", { length: 64 }),
   /** For time blocks: end time (ISO string) */
   endTime: varchar("endTime", { length: 64 }),
-  /** Canvas position: x coordinate (for graph layout) */
+  /** Canvas position: x coordinate */
   canvasX: int("canvasX").default(0),
-  /** Canvas position: y coordinate (for graph layout) */
+  /** Canvas position: y coordinate */
   canvasY: int("canvasY").default(0),
+  /** Canvas card width in pixels */
+  canvasWidth: int("canvasWidth").default(220),
+  /** Canvas card height in pixels (0 = auto) */
+  canvasHeight: int("canvasHeight").default(0),
+  /** Card background color (hex) */
+  cardColor: varchar("cardColor", { length: 16 }),
+  /** Attached file URL (image, PDF, doc) */
+  attachmentUrl: text("attachmentUrl"),
+  /** Attached file type: image, pdf, doc, other */
+  attachmentType: varchar("attachmentType", { length: 32 }),
+  /** Attached file name for display */
+  attachmentName: varchar("attachmentName", { length: 255 }),
   /** Language: en or he (for RTL support) */
   language: varchar("language", { length: 8 }).default("en"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
