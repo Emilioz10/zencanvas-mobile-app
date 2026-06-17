@@ -230,17 +230,22 @@ export async function createRelationship(
   fromNodeId: number,
   toNodeId: number,
   type: string,
-  label?: string
+  label?: string,
+  edgeStyle?: { edgeColor?: string; fromSide?: string; toSide?: string; fromEnd?: string; toEnd?: string }
 ) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-
   await db.insert(relationships).values({
     userId,
     fromNodeId,
     toNodeId,
     type,
     label,
+    edgeColor: edgeStyle?.edgeColor,
+    fromSide: edgeStyle?.fromSide,
+    toSide: edgeStyle?.toSide,
+    fromEnd: edgeStyle?.fromEnd ?? "none",
+    toEnd: edgeStyle?.toEnd ?? "arrow",
   });
 }
 

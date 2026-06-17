@@ -81,6 +81,22 @@ export const nodes = mysqlTable("nodes", {
   attachmentName: varchar("attachmentName", { length: 255 }),
   /** Language: en or he (for RTL support) */
   language: varchar("language", { length: 8 }).default("en"),
+  /** JSON Canvas node type: text | file | link | group | flashcard */
+  canvasNodeType: varchar("canvasNodeType", { length: 32 }).default("text"),
+  /** For link nodes: the URL */
+  canvasUrl: text("canvasUrl"),
+  /** For group nodes: display label */
+  canvasLabel: varchar("canvasLabel", { length: 255 }),
+  /** For group nodes: background image URL */
+  canvasBackground: text("canvasBackground"),
+  /** For group nodes: background style (cover|ratio|repeat) */
+  canvasBackgroundStyle: varchar("canvasBackgroundStyle", { length: 16 }),
+  /** For flashcard nodes: the answer/back side */
+  flashcardBack: text("flashcardBack"),
+  /** Canvas color: hex or preset 1-6 */
+  canvasColor: varchar("canvasColor", { length: 16 }),
+  /** z-index order on canvas */
+  canvasZIndex: int("canvasZIndex").default(0),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
@@ -133,6 +149,16 @@ export const relationships = mysqlTable("relationships", {
   type: varchar("type", { length: 64 }).notNull().default("related_to"),
   /** Optional label for the relationship (displayed on graph edge) */
   label: varchar("label", { length: 255 }),
+  /** Edge color: hex or preset 1-6 */
+  edgeColor: varchar("edgeColor", { length: 16 }),
+  /** Side the edge starts from: top|right|bottom|left */
+  fromSide: varchar("fromSide", { length: 8 }),
+  /** Side the edge ends at: top|right|bottom|left */
+  toSide: varchar("toSide", { length: 8 }),
+  /** Arrow shape at start: none|arrow */
+  fromEnd: varchar("fromEnd", { length: 8 }).default("none"),
+  /** Arrow shape at end: none|arrow */
+  toEnd: varchar("toEnd", { length: 8 }).default("arrow"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

@@ -99,6 +99,14 @@ export const appRouter = router({
           attachmentType: z.string().optional(),
           attachmentName: z.string().optional(),
           language: z.string().optional(),
+          canvasNodeType: z.string().optional(),
+          canvasUrl: z.string().optional(),
+          canvasLabel: z.string().optional(),
+          canvasBackground: z.string().optional(),
+          canvasBackgroundStyle: z.string().optional(),
+          flashcardBack: z.string().optional(),
+          canvasColor: z.string().optional(),
+          canvasZIndex: z.number().optional(),
         })
       )
       .mutation(async ({ ctx, input }) => {
@@ -129,6 +137,14 @@ export const appRouter = router({
           attachmentType: z.string().optional(),
           attachmentName: z.string().optional(),
           language: z.string().optional(),
+          canvasNodeType: z.string().optional(),
+          canvasUrl: z.string().optional(),
+          canvasLabel: z.string().optional(),
+          canvasBackground: z.string().optional(),
+          canvasBackgroundStyle: z.string().optional(),
+          flashcardBack: z.string().optional(),
+          canvasColor: z.string().optional(),
+          canvasZIndex: z.number().optional(),
         })
       )
       .mutation(async ({ ctx, input }) => {
@@ -178,6 +194,11 @@ export const appRouter = router({
           toNodeId: z.number(),
           type: z.string(),
           label: z.string().optional(),
+          edgeColor: z.string().optional(),
+          fromSide: z.string().optional(),
+          toSide: z.string().optional(),
+          fromEnd: z.string().optional(),
+          toEnd: z.string().optional(),
         })
       )
       .mutation(async ({ ctx, input }) => {
@@ -186,7 +207,8 @@ export const appRouter = router({
           input.fromNodeId,
           input.toNodeId,
           input.type,
-          input.label
+          input.label,
+          { edgeColor: input.edgeColor, fromSide: input.fromSide, toSide: input.toSide, fromEnd: input.fromEnd, toEnd: input.toEnd }
         );
         return { success: true };
       }),

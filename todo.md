@@ -309,3 +309,17 @@
 - [x] Filter pills by node type
 - [x] Hebrew Heebo font + RTL auto-detection in cards
 - [x] Schema extended: canvasWidth, canvasHeight, cardColor, attachmentUrl, attachmentType, attachmentName
+
+## JSON Canvas Rebuild (Obsidian spec + Boardly + Mochi)
+- [ ] Extend schema: add canvasNodeType (text/file/link/group/flashcard), canvasUrl, canvasLabel, canvasGroupId, edgeColor, edgeFromSide, edgeToSide, edgeFromEnd, edgeToEnd
+- [ ] Add DB migration for new canvas fields
+- [ ] Build JsonCanvas component: text cards (Markdown), file cards (image/doc), link cards (URL preview), group containers, flashcard cards
+- [ ] Canvas color system: 6 preset colors (1-6) + hex, apply to nodes and edges
+- [ ] Group node: visual container with label, drag children together
+- [ ] Link preview card: fetch Open Graph metadata (title, image, description) for URLs
+- [ ] Mochi-style flashcard: front/back with flip animation
+- [ ] Colored edges: 6 preset colors + hex, fromSide/toSide, fromEnd/toEnd (arrow/none)
+- [ ] Export canvas as .canvas JSON file (JSON Canvas spec)
+- [ ] Import .canvas JSON file and render on canvas
+- [ ] Mobile bottom toolbar updated for new node types
+- [ ] Markdown rendering inside text cards (with streamdown or react-markdown)
