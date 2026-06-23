@@ -437,6 +437,11 @@ export function JsonCanvas() {
   const [newUrl, setNewUrl] = useState("");
   const [newBack, setNewBack] = useState("");
 
+  // FAB state
+  const [fabOpen, setFabOpen] = useState(false);
+  // Image/camera refs
+  const cameraInputRef = useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
   // Import/export
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -762,6 +767,78 @@ export function JsonCanvas() {
     URL.revokeObjectURL(url);
     toast.success("Exported as .canvas file");
   }, [nodes, edges]);
+
+  // ── FAB quick-create helpers ────────────────────────────────────────────────
+  const fabCenterPos = useCallback(() => {
+    const rect = canvasRef.current?.getBoundingClientRect();
+    if (!rect) return { x: 100, y: 100 };
+    const t = transformRef.current;
+    return {
+      x: Math.round(((rect.width / 2) - t.x) / t.scale),
+      y: Math.round(((rect.height / 2) - t.y) / t.scale),
+    };
+  }, []);
+
+  const fabAddNote = useCallback(() => {
+    setFabOpen(false);
+    const pos = fabCenterPos();
+    setActiveTool("text");
+    setCreatePos(pos);
+    setNewTitle("");
+    setNewBody("");
+    setNewColor("");
+    setShowCreate(true);
+  }, [fabCenterPos]);
+
+  const fabAddTask = useCallback(() => {
+    setFabOpen(false);
+    const pos = fabCenterPos();
+    setActiveTool("task");
+    setCreatePos(pos);
+    setNewTitle("");
+    setNewBody("");
+    setNewStatus("inbox");
+    setNewColor("");
+    setShowCreate(true);
+  }, [fabCenterPos]);
+
+  const handleImageFile = useCallback(async (file: File) => {
+    setFabOpen(false);
+    const pos = fabCenterPos();
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      if (!res.ok) throw new Error("Upload failed");
+      const { url } = await res.json() as { url: string };
+      createNode.mutate({
+        type: "file",
+        canvasNodeType: "file",
+        body: file.name,
+        attachmentUrl: url,
+        attachmentType: file.type,
+        attachmentName: file.name,
+        canvasX: Math.round(pos.x),
+        canvasY: Math.round(pos.y),
+        canvasWidth: 240,
+        canvasHeight: 180,
+      }, { onSuccess: () => { refetchNodes(); toast.success("Image added to canvas!"); } });
+    } catch {
+      toast.error("Failed to upload image");
+    }
+  }, [fabCenterPos, createNode, refetchNodes]);
+
+  const onCameraChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleImageFile(file);
+    e.target.value = "";
+  }, [handleImageFile]);
+
+  const onGalleryChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleImageFile(file);
+    e.target.value = "";
+  }, [handleImageFile]);
 
   // ── Import .canvas ──────────────────────────────────────────────────────────
   const importCanvas = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1244,6 +1321,104 @@ export function JsonCanvas() {
           </button>
         </div>
       )}
+
+      {/* ── FAB (Floating Action Button) ──────────────────────────────────── */}
+      {/* Hidden file inputs for camera and gallery */}
+      <input
+        ref={cameraInputRef}
+        type="file"
+        accept="image/*"
+        capture="environment"
+        style={{ display: "none" }}
+        onChange={onCameraChange}
+      />
+      <input
+        ref={galleryInputRef}
+        type="file"
+        accept="image/*,video/*"
+        style={{ display: "none" }}
+        onChange={onGalleryChange}
+      />
+
+      {/* FAB backdrop */}
+      {fabOpen && (
+        <div
+          style={{ position: "absolute", inset: 0, zIndex: 149 }}
+          onPointerDown={() => setFabOpen(false)}
+        />
+      )}
+
+      {/* FAB menu items */}
+      {fabOpen && (
+        <div style={{
+          position: "absolute",
+          bottom: 90,
+          right: 20,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-end",
+          gap: 12,
+          zIndex: 150,
+        }}>
+          {[
+            { icon: "📷", label: "מצלמה", action: () => { setFabOpen(false); cameraInputRef.current?.click(); } },
+            { icon: "🖼️", label: "גלריה", action: () => { setFabOpen(false); galleryInputRef.current?.click(); } },
+            { icon: "✅", label: "משימה", action: fabAddTask },
+            { icon: "📝", label: "פתק", action: fabAddNote },
+          ].map((item) => (
+            <button
+              key={item.label}
+              onPointerDown={(e) => { e.stopPropagation(); item.action(); }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                background: "#fff",
+                border: "none",
+                borderRadius: 28,
+                padding: "10px 18px 10px 14px",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.18)",
+                fontSize: 15,
+                fontWeight: 600,
+                color: "#374151",
+                cursor: "pointer",
+                direction: "rtl",
+                animation: "fabItemIn 0.18s cubic-bezier(0.23,1,0.32,1) both",
+              }}
+            >
+              <span style={{ fontSize: 22 }}>{item.icon}</span>
+              <span>{item.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* FAB main button */}
+      <button
+        onPointerDown={(e) => { e.stopPropagation(); setFabOpen(o => !o); }}
+        style={{
+          position: "absolute",
+          bottom: 20,
+          right: 20,
+          width: 60,
+          height: 60,
+          borderRadius: "50%",
+          background: "#6366f1",
+          border: "none",
+          boxShadow: "0 6px 24px rgba(99,102,241,0.5)",
+          fontSize: 28,
+          color: "#fff",
+          cursor: "pointer",
+          zIndex: 150,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          transition: "transform 0.2s cubic-bezier(0.23,1,0.32,1), background 0.2s",
+          transform: fabOpen ? "rotate(45deg) scale(1.08)" : "rotate(0deg) scale(1)",
+        }}
+      >
+        +
+      </button>
 
       {/* Empty state */}
       {nodes.length === 0 && (
