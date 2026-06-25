@@ -323,3 +323,16 @@
 - [ ] Import .canvas JSON file and render on canvas
 - [ ] Mobile bottom toolbar updated for new node types
 - [ ] Markdown rendering inside text cards (with streamdown or react-markdown)
+
+## Module Entity System (COMPLETE — Capacitor-style hub)
+- [x] Define 8 entity type templates with YAML frontmatter schema: Task, Project, Contact, Finance, File, Bookmark, Note, List
+- [x] Add moduleType and templateData columns to nodes table + migration
+- [x] Build Module Hub home screen (/ route — Capacitor-style list with greeting)
+- [x] Build entity creation forms per module type (structured fields per template)
+- [x] Support remark/marp-style YAML frontmatter in node body (parse/build on save)
+- [x] Cross-entity linking UI (EntityLinker — link any entity to any other with type)
+- [x] Module detail list view (all entities of a given type, filterable by status)
+- [x] Browse Modules screen (bottom sheet — toggle modules on/off)
+- [x] Module icons and colors per type
+- [x] EntityLinker with 6 link types: related/blocks/blocked_by/part_of/references/depends_on
+- [x] "Show in canvas" button from entity detail

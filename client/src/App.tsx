@@ -14,6 +14,8 @@ import Tasks from "./pages/Tasks";
 import Timeline from "./pages/Timeline";
 import NodeDetail from "./pages/NodeDetail";
 import LifeDomains from "./pages/LifeDomains";
+import ModuleHub from "./pages/ModuleHub";
+import ModuleDetail from "./pages/ModuleDetail";
 
 function Router() {
   const { showHelp, setShowHelp } = useKeyboardShortcuts();
@@ -22,7 +24,8 @@ function Router() {
     <>
       <KeyboardShortcutsHelp open={showHelp} onOpenChange={setShowHelp} />
     <Switch>
-      <Route path={"/"} component={Home} />
+      <Route path={"/"} component={ModuleHub} />
+      <Route path={"/home"} component={Home} />
       <Route path={"/dashboard"} component={Dashboard} />
       <Route path={"/canvas"} component={Canvas} />
       <Route path={"/inbox"} component={Inbox} />
@@ -31,6 +34,7 @@ function Router() {
       <Route path={"/node/:id"} component={NodeDetail} />
       <Route path={"/node/new"} component={NodeDetail} />
       <Route path={"/domains"} component={LifeDomains} />
+      <Route path={"/module/:moduleType"} component={ModuleDetail} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

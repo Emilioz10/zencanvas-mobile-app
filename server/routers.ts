@@ -107,6 +107,8 @@ export const appRouter = router({
           flashcardBack: z.string().optional(),
           canvasColor: z.string().optional(),
           canvasZIndex: z.number().optional(),
+          moduleType: z.string().optional(),
+          templateData: z.string().optional(),
         })
       )
       .mutation(async ({ ctx, input }) => {
@@ -145,6 +147,8 @@ export const appRouter = router({
           flashcardBack: z.string().optional(),
           canvasColor: z.string().optional(),
           canvasZIndex: z.number().optional(),
+          moduleType: z.string().optional(),
+          templateData: z.string().optional(),
         })
       )
       .mutation(async ({ ctx, input }) => {

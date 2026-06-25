@@ -97,6 +97,10 @@ export const nodes = mysqlTable("nodes", {
   canvasColor: varchar("canvasColor", { length: 16 }),
   /** z-index order on canvas */
   canvasZIndex: int("canvasZIndex").default(0),
+  /** Module type: task | project | contact | finance | file | bookmark | note | list */
+  moduleType: varchar("moduleType", { length: 32 }),
+  /** JSON-encoded structured template fields (per module type) */
+  templateData: text("templateData"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });
