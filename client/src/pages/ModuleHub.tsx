@@ -81,6 +81,42 @@ export default function ModuleHub() {
         </div>
       </div>
 
+      {/* Quick Access: Daily Tracker + App Map */}
+      <div style={{ padding: "8px 16px 4px", display: "flex", gap: 10 }}>
+        <button
+          onClick={() => setLocation("/tracker")}
+          style={{
+            flex: 1, padding: "14px 12px", borderRadius: 14,
+            background: "linear-gradient(135deg, #fdf2f8, #fce7f3)",
+            border: "1.5px solid #f9a8d4",
+            cursor: "pointer", textAlign: "right", direction: "rtl",
+            display: "flex", alignItems: "center", gap: 10,
+          }}
+        >
+          <div style={{ fontSize: 28 }}>📋</div>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#be185d" }}>יומן יומי</div>
+            <div style={{ fontSize: 11, color: "#9d174d" }}>רני · פיצ' · בריאות · כסף</div>
+          </div>
+        </button>
+        <button
+          onClick={() => setLocation("/appmap")}
+          style={{
+            flex: 1, padding: "14px 12px", borderRadius: 14,
+            background: "linear-gradient(135deg, #eef2ff, #e0e7ff)",
+            border: "1.5px solid #a5b4fc",
+            cursor: "pointer", textAlign: "right", direction: "rtl",
+            display: "flex", alignItems: "center", gap: 10,
+          }}
+        >
+          <div style={{ fontSize: 28 }}>🗺️</div>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#4338ca" }}>מפת כלים</div>
+            <div style={{ fontSize: 11, color: "#3730a3" }}>השוואת אפליקציות</div>
+          </div>
+        </button>
+      </div>
+
       {/* Module list */}
       <div style={{ flex: 1, padding: "12px 16px 100px", overflowY: "auto" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>

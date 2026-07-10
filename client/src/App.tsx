@@ -16,6 +16,8 @@ import NodeDetail from "./pages/NodeDetail";
 import LifeDomains from "./pages/LifeDomains";
 import ModuleHub from "./pages/ModuleHub";
 import ModuleDetail from "./pages/ModuleDetail";
+import DailyTracker from "./pages/DailyTracker";
+import AppMap from "./pages/AppMap";
 
 function Router() {
   const { showHelp, setShowHelp } = useKeyboardShortcuts();
@@ -35,6 +37,8 @@ function Router() {
       <Route path={"/node/new"} component={NodeDetail} />
       <Route path={"/domains"} component={LifeDomains} />
       <Route path={"/module/:moduleType"} component={ModuleDetail} />
+      <Route path={"/tracker"} component={DailyTracker} />
+      <Route path={"/appmap"} component={AppMap} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

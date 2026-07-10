@@ -27,6 +27,7 @@ export const appRouter = router({
   nodeMetadata: extendedRouter.nodeMetadata,
   taskDependencies: extendedRouter.taskDependencies,
   lifeSkillsGuides: extendedRouter.lifeSkillsGuides,
+  dailyLogs: extendedRouter.dailyLogs,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {

@@ -43,6 +43,13 @@
       "when": 1782390146153,
       "tag": "0005_cool_invaders",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1783698289121,
+      "tag": "0006_safe_molten_man",
+      "breakpoints": true
     }
   ]
 }

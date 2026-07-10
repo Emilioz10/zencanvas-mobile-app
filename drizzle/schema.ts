@@ -237,3 +237,29 @@ export const suggestedRelationships = mysqlTable("suggestedRelationships", {
 
 export type SuggestedRelationship = typeof suggestedRelationships.$inferSelect;
 export type InsertSuggestedRelationship = typeof suggestedRelationships.$inferInsert;
+
+/**
+ * Daily Life Logs: Quick-entry tracking for daily life events
+ * Topics: dog (פיצ'), baby (רני), health (בריאות), money (כסף), task (משימה), relationship (אלי)
+ * Based on NarraBaby + Everyday Tasks patterns
+ */
+export const dailyLogs = mysqlTable("dailyLogs", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id),
+  /** Topic/category: dog | baby | health | money | task | relationship | other */
+  topic: varchar("topic", { length: 32 }).notNull(),
+  /** Event type within topic: e.g. feeding | walk | medication | sleep | diaper | note */
+  eventType: varchar("eventType", { length: 64 }).notNull().default("note"),
+  /** Numeric value (e.g. ml for feeding, minutes for walk) */
+  value: varchar("value", { length: 64 }),
+  /** Unit for the value (ml, g, min, ₪, etc.) */
+  unit: varchar("unit", { length: 16 }),
+  /** Free text notes */
+  notes: text("notes"),
+  /** When the event happened (defaults to now) */
+  eventAt: timestamp("eventAt").defaultNow().notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type DailyLog = typeof dailyLogs.$inferSelect;
+export type InsertDailyLog = typeof dailyLogs.$inferInsert;

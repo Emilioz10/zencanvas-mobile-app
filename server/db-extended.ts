@@ -1,6 +1,7 @@
 import { eq, and } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { lifeDomains, nodeMetadata, taskDependencies, lifeSkillsGuides } from "../drizzle/schema";
+import { lifeDomains, nodeMetadata, taskDependencies, lifeSkillsGuides, dailyLogs } from "../drizzle/schema";
+import { desc } from "drizzle-orm";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -137,6 +138,62 @@ export async function createLifeSkillsGuide(
 export async function getLifeSkillsGuidesByTaskId(taskId: number) {
   const db = await getDb();
   if (!db) return [];
-
   return await db.select().from(lifeSkillsGuides).where(eq(lifeSkillsGuides.taskId, taskId));
+}
+
+// Daily Logs
+export async function createDailyLog(
+  userId: number,
+  topic: string,
+  eventType: string,
+  value?: string,
+  unit?: string,
+  notes?: string,
+  eventAt?: Date
+) {
+  const db = await getDb();
+  if (!db) throw new Error("Database not available");
+  return await db.insert(dailyLogs).values({
+    userId,
+    topic,
+    eventType,
+    value,
+    unit,
+    notes,
+    eventAt: eventAt || new Date(),
+  });
+}
+
+export async function getDailyLogs(userId: number, topic?: string, limit = 100) {
+  const db = await getDb();
+  if (!db) return [];
+  if (topic) {
+    return await db
+      .select()
+      .from(dailyLogs)
+      .where(and(eq(dailyLogs.userId, userId), eq(dailyLogs.topic, topic)))
+      .orderBy(desc(dailyLogs.eventAt))
+      .limit(limit);
+  }
+  return await db
+    .select()
+    .from(dailyLogs)
+    .where(eq(dailyLogs.userId, userId))
+    .orderBy(desc(dailyLogs.eventAt))
+    .limit(limit);
+}
+
+export async function getLastLogByTopic(userId: number, topic: string, eventType?: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const conditions = eventType
+    ? and(eq(dailyLogs.userId, userId), eq(dailyLogs.topic, topic), eq(dailyLogs.eventType, eventType))
+    : and(eq(dailyLogs.userId, userId), eq(dailyLogs.topic, topic));
+  const result = await db
+    .select()
+    .from(dailyLogs)
+    .where(conditions)
+    .orderBy(desc(dailyLogs.eventAt))
+    .limit(1);
+  return result.length > 0 ? result[0] : null;
 }

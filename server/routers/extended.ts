@@ -120,4 +120,42 @@ export const extendedRouter = router({
         );
       }),
   }),
+
+  // Daily Life Logs
+  dailyLogs: router({
+    list: protectedProcedure
+      .input(z.object({ topic: z.string().optional(), limit: z.number().optional() }))
+      .query(async ({ ctx, input }) => {
+        return await dbExt.getDailyLogs(ctx.user.id, input.topic, input.limit);
+      }),
+
+    getLastByTopic: protectedProcedure
+      .input(z.object({ topic: z.string(), eventType: z.string().optional() }))
+      .query(async ({ ctx, input }) => {
+        return await dbExt.getLastLogByTopic(ctx.user.id, input.topic, input.eventType);
+      }),
+
+    create: protectedProcedure
+      .input(
+        z.object({
+          topic: z.string(),
+          eventType: z.string().default("note"),
+          value: z.string().optional(),
+          unit: z.string().optional(),
+          notes: z.string().optional(),
+          eventAt: z.date().optional(),
+        })
+      )
+      .mutation(async ({ ctx, input }) => {
+        return await dbExt.createDailyLog(
+          ctx.user.id,
+          input.topic,
+          input.eventType,
+          input.value,
+          input.unit,
+          input.notes,
+          input.eventAt
+        );
+      }),
+  }),
 });

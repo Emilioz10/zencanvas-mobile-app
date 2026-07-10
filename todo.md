@@ -336,3 +336,24 @@
 - [x] Module icons and colors per type
 - [x] EntityLinker with 6 link types: related/blocks/blocked_by/part_of/references/depends_on
 - [x] "Show in canvas" button from entity detail
+
+## Daily Life Tracker (NarraBaby + Everyday Tasks pattern)
+- [x] Add dailyLogs table to schema: topic, eventType, value, unit, notes, timestamp
+- [x] Add DB migration for dailyLogs table
+- [x] Add dailyLogs tRPC router (list, create, getLastByTopic)
+- [x] Build DailyTracker page (/tracker route)
+- [x] Quick-entry cards: 🐕 פיצ' | 👶 רני | 💊 בריאות | 💰 כסף | 📋 משימה | ❤️ אלי
+- [x] Roni card: feeding timer (amount ml, formula grams, temp), sleep timer, diaper, health note
+- [x] Pitz card: fed (time + amount), walk (time + duration), medication, vet note
+- [x] Each card shows "last entry X minutes ago" summary
+- [x] Chronological timeline view of all daily log entries
+- [x] Filter timeline by topic chip
+- [x] Add /tracker to navigation in ModuleHub
+
+## App Capability Mapping (visual matrix)
+- [x] Build AppMap page (/appmap route)
+- [x] Matrix table: apps × capabilities (capture, transcribe, organize, retrieve, export, share, offline, Hebrew, free)
+- [x] User's 373 apps mapped to capabilities from backup
+- [x] Color-coded cells: full / partial / none
+- [x] Gap analysis: highlight missing capabilities
+- [x] Add /appmap to navigation in ModuleHub
