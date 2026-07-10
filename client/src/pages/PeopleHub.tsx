@@ -27,6 +27,18 @@ function timeAgo(date: Date | string | null): string {
   return `לפני ${Math.floor(diffDay / 30)} חודשים`;
 }
 
+/** Traffic-light: returns color + label based on days since last contact */
+function trafficLight(date: Date | string | null): { color: string; bg: string; dot: string; label: string } {
+  if (!date) return { color: "#6b7280", bg: "#f3f4f6", dot: "#9ca3af", label: "אף פעם" };
+  const days = (Date.now() - new Date(date).getTime()) / 86400000;
+  if (days < 1) return { color: "#059669", bg: "#d1fae5", dot: "#10b981", label: "היום" };
+  if (days < 3) return { color: "#047857", bg: "#d1fae5", dot: "#10b981", label: `לפני ${Math.floor(days)} ימים` };
+  if (days < 7) return { color: "#d97706", bg: "#fef3c7", dot: "#f59e0b", label: `לפני ${Math.floor(days)} ימים` };
+  if (days < 14) return { color: "#b45309", bg: "#fef3c7", dot: "#f59e0b", label: `לפני ${Math.floor(days)} ימים` };
+  if (days < 30) return { color: "#dc2626", bg: "#fee2e2", dot: "#ef4444", label: `לפני ${Math.floor(days / 7)} שבועות` };
+  return { color: "#991b1b", bg: "#fee2e2", dot: "#ef4444", label: `לפני ${Math.floor(days / 30)} חודשים` };
+}
+
 function scoreColor(score: number): string {
   if (score >= 4) return "#10b981";
   if (score >= 3) return "#f59e0b";
@@ -207,12 +219,24 @@ function PersonCard({
         {RELATION_LABELS[person.relationshipType ?? "other"]}
       </Badge>
 
-      <div className="flex items-center justify-between text-xs text-muted-foreground mt-1">
-        <div className="flex items-center gap-1">
-          <Clock className="w-3 h-3" />
-          {timeAgo(lastDate)}
-        </div>
-        <div>{person.totalInteractions} פגישות</div>
+      <div className="flex items-center justify-between mt-1">
+        {/* Traffic-light badge */}
+        {(() => {
+          const tl = trafficLight(lastDate);
+          return (
+            <div
+              className="flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-semibold"
+              style={{ backgroundColor: tl.bg, color: tl.color }}
+            >
+              <span
+                className="inline-block w-2 h-2 rounded-full"
+                style={{ backgroundColor: tl.dot }}
+              />
+              {tl.label}
+            </div>
+          );
+        })()}
+        <div className="text-xs text-muted-foreground">{person.totalInteractions} פגישות</div>
       </div>
     </button>
   );

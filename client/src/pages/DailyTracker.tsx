@@ -129,6 +129,19 @@ function formatTime(date: Date | string): string {
   return new Date(date).toLocaleTimeString("he-IL", { hour: "2-digit", minute: "2-digit" });
 }
 
+/** Traffic-light based on hours since last event */
+function trafficLight(date: Date | string | null | undefined): { color: string; bg: string; dot: string; label: string } | null {
+  if (!date) return null;
+  const hours = (Date.now() - new Date(date).getTime()) / 3600000;
+  if (hours < 3) return { color: "#059669", bg: "#d1fae5", dot: "#10b981", label: "עכשיו" };
+  if (hours < 6) return { color: "#047857", bg: "#d1fae5", dot: "#10b981", label: `${Math.floor(hours)}שע` };
+  if (hours < 12) return { color: "#d97706", bg: "#fef3c7", dot: "#f59e0b", label: `${Math.floor(hours)}שע` };
+  if (hours < 24) return { color: "#b45309", bg: "#fef3c7", dot: "#f59e0b", label: `${Math.floor(hours)}שע` };
+  const days = Math.floor(hours / 24);
+  if (days < 3) return { color: "#dc2626", bg: "#fee2e2", dot: "#ef4444", label: `${days}ד` };
+  return { color: "#991b1b", bg: "#fee2e2", dot: "#ef4444", label: `${days}ד` };
+}
+
 function formatDate(date: Date | string): string {
   const d = new Date(date);
   const today = new Date();
@@ -162,7 +175,18 @@ function TopicCard({ topic, onAdd }: { topic: Topic; onAdd: (topic: Topic) => vo
             {topic.label}
           </div>
           {lastLog ? (
-            <div className="text-xs text-gray-500">{timeAgo(lastLog.eventAt)}</div>
+            (() => {
+              const tl = trafficLight(lastLog.eventAt);
+              return tl ? (
+                <div
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold mt-0.5"
+                  style={{ backgroundColor: tl.bg, color: tl.color }}
+                >
+                  <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ backgroundColor: tl.dot }} />
+                  {tl.label}
+                </div>
+              ) : null;
+            })()
           ) : (
             <div className="text-xs text-gray-400">אין רשומות עדיין</div>
           )}

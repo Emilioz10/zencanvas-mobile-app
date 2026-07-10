@@ -191,7 +191,7 @@ export default function PersonDetail() {
   const color = person.color ?? "#6b7280";
   const avgScore =
     interactions.length > 0
-      ? interactions.reduce((sum, i) => sum + (i.score ?? 3), 0) / interactions.length
+      ? interactions.reduce((sum: number, i: { score: number | null }) => sum + (i.score ?? 3), 0) / interactions.length
       : 3;
 
   return (

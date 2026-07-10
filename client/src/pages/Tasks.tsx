@@ -41,34 +41,63 @@ export default function Tasks() {
     }
   };
 
-  const TaskItem = ({ task, showStatus = false }: { task: any; showStatus?: boolean }) => (
-    <Card className="shadow-calm hover:shadow-card transition-calm">
-      <CardContent className="pt-4">
-        <div className="flex items-start gap-3">
-          <Checkbox
-            checked={task.status === "done"}
-            onCheckedChange={(checked) =>
-              handleStatusChange(task.id, checked ? "done" : "next")
-            }
-            className="mt-1"
-          />
-          <div className="flex-1 min-w-0">
-            <p className={`text-sm leading-relaxed ${task.status === "done" ? "line-through text-calm" : ""}`}>
-              {task.body}
-            </p>
-            <p className="text-xs text-calm mt-2">
-              {new Date(task.updatedAt).toLocaleDateString()}
-            </p>
+  /** Traffic-light for tasks: based on how long since last update */
+  const taskTrafficLight = (updatedAt: string | Date) => {
+    const days = (Date.now() - new Date(updatedAt).getTime()) / 86400000;
+    if (days < 1) return { bg: "#d1fae5", color: "#059669", dot: "#10b981", label: "עודכןי" };
+    if (days < 3) return { bg: "#d1fae5", color: "#047857", dot: "#10b981", label: `${Math.floor(days)}ד` };
+    if (days < 7) return { bg: "#fef3c7", color: "#d97706", dot: "#f59e0b", label: `${Math.floor(days)}ד` };
+    if (days < 14) return { bg: "#fef3c7", color: "#b45309", dot: "#f59e0b", label: `${Math.floor(days)}ד` };
+    if (days < 30) return { bg: "#fee2e2", color: "#dc2626", dot: "#ef4444", label: `${Math.floor(days / 7)}שב` };
+    return { bg: "#fee2e2", color: "#991b1b", dot: "#ef4444", label: `${Math.floor(days / 30)}ח` };
+  };
+
+  const TaskItem = ({ task, showStatus = false }: { task: any; showStatus?: boolean }) => {
+    const tl = taskTrafficLight(task.updatedAt);
+    const isDone = task.status === "done";
+    return (
+      <Card
+        className="hover:shadow-card transition-calm"
+        style={{ borderRightWidth: 4, borderRightColor: isDone ? "#d1d5db" : tl.dot }}
+      >
+        <CardContent className="pt-4">
+          <div className="flex items-start gap-3">
+            <Checkbox
+              checked={isDone}
+              onCheckedChange={(checked) =>
+                handleStatusChange(task.id, checked ? "done" : "next")
+              }
+              className="mt-1"
+            />
+            <div className="flex-1 min-w-0">
+              <p className={`text-sm leading-relaxed ${isDone ? "line-through text-calm" : ""}`}>
+                {task.body}
+              </p>
+              <div className="flex items-center gap-2 mt-2">
+                {!isDone && (
+                  <span
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold"
+                    style={{ backgroundColor: tl.bg, color: tl.color }}
+                  >
+                    <span className="inline-block w-1.5 h-1.5 rounded-full" style={{ backgroundColor: tl.dot }} />
+                    {tl.label}
+                  </span>
+                )}
+                <span className="text-xs text-calm">
+                  {new Date(task.updatedAt).toLocaleDateString("he-IL")}
+                </span>
+              </div>
+            </div>
+            {showStatus && (
+              <span className="text-xs font-medium px-2 py-1 bg-accent/10 text-accent rounded">
+                {task.status}
+              </span>
+            )}
           </div>
-          {showStatus && (
-            <span className="text-xs font-medium px-2 py-1 bg-accent/10 text-accent rounded">
-              {task.status}
-            </span>
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  );
+        </CardContent>
+      </Card>
+    );
+  };
 
   return (
     <DashboardLayout>
