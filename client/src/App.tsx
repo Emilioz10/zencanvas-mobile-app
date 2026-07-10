@@ -18,6 +18,10 @@ import ModuleHub from "./pages/ModuleHub";
 import ModuleDetail from "./pages/ModuleDetail";
 import DailyTracker from "./pages/DailyTracker";
 import AppMap from "./pages/AppMap";
+import LocationIndex from "./pages/LocationIndex";
+import SkillsIndex from "./pages/SkillsIndex";
+import PeopleHub from "./pages/PeopleHub";
+import PersonDetail from "./pages/PersonDetail";
 
 function Router() {
   const { showHelp, setShowHelp } = useKeyboardShortcuts();
@@ -39,6 +43,10 @@ function Router() {
       <Route path={"/module/:moduleType"} component={ModuleDetail} />
       <Route path={"/tracker"} component={DailyTracker} />
       <Route path={"/appmap"} component={AppMap} />
+      <Route path={"/locations"} component={LocationIndex} />
+      <Route path={"/skills"} component={SkillsIndex} />
+      <Route path={"/people"} component={PeopleHub} />
+      <Route path={"/people/:id"} component={PersonDetail} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

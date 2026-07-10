@@ -50,6 +50,13 @@
       "when": 1783698289121,
       "tag": "0006_safe_molten_man",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1783699169788,
+      "tag": "0007_harsh_rocket_racer",
+      "breakpoints": true
     }
   ]
 }

@@ -81,8 +81,44 @@ export default function ModuleHub() {
         </div>
       </div>
 
-      {/* Quick Access: Daily Tracker + App Map */}
+      {/* Quick Access Row 1: People + Skills */}
       <div style={{ padding: "8px 16px 4px", display: "flex", gap: 10 }}>
+        <button
+          onClick={() => setLocation("/people")}
+          style={{
+            flex: 1, padding: "14px 12px", borderRadius: 14,
+            background: "linear-gradient(135deg, #fef3c7, #fde68a)",
+            border: "1.5px solid #fcd34d",
+            cursor: "pointer", textAlign: "right", direction: "rtl",
+            display: "flex", alignItems: "center", gap: 10,
+          }}
+        >
+          <div style={{ fontSize: 28 }}>👥</div>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#92400e" }}>אנשים</div>
+            <div style={{ fontSize: 11, color: "#78350f" }}>אלי · רופאים · גורמים</div>
+          </div>
+        </button>
+        <button
+          onClick={() => setLocation("/skills")}
+          style={{
+            flex: 1, padding: "14px 12px", borderRadius: 14,
+            background: "linear-gradient(135deg, #ecfdf5, #d1fae5)",
+            border: "1.5px solid #6ee7b7",
+            cursor: "pointer", textAlign: "right", direction: "rtl",
+            display: "flex", alignItems: "center", gap: 10,
+          }}
+        >
+          <div style={{ fontSize: 28 }}>⚡</div>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#065f46" }}>מה אני יודע</div>
+            <div style={{ fontSize: 11, color: "#047857" }}>מדריכים שלב-אחר-שלב</div>
+          </div>
+        </button>
+      </div>
+
+      {/* Quick Access Row 2: Daily Tracker + Locations + AppMap */}
+      <div style={{ padding: "4px 16px 4px", display: "flex", gap: 10 }}>
         <button
           onClick={() => setLocation("/tracker")}
           style={{
@@ -100,19 +136,19 @@ export default function ModuleHub() {
           </div>
         </button>
         <button
-          onClick={() => setLocation("/appmap")}
+          onClick={() => setLocation("/locations")}
           style={{
             flex: 1, padding: "14px 12px", borderRadius: 14,
-            background: "linear-gradient(135deg, #eef2ff, #e0e7ff)",
-            border: "1.5px solid #a5b4fc",
+            background: "linear-gradient(135deg, #f0f9ff, #e0f2fe)",
+            border: "1.5px solid #7dd3fc",
             cursor: "pointer", textAlign: "right", direction: "rtl",
             display: "flex", alignItems: "center", gap: 10,
           }}
         >
-          <div style={{ fontSize: 28 }}>🗺️</div>
+          <div style={{ fontSize: 28 }}>📍</div>
           <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#4338ca" }}>מפת כלים</div>
-            <div style={{ fontSize: 11, color: "#3730a3" }}>השוואת אפליקציות</div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#0369a1" }}>איפה הכל</div>
+            <div style={{ fontSize: 11, color: "#0284c7" }}>מיקום כל מידע</div>
           </div>
         </button>
       </div>

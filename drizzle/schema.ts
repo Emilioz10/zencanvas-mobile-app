@@ -263,3 +263,61 @@ export const dailyLogs = mysqlTable("dailyLogs", {
 
 export type DailyLog = typeof dailyLogs.$inferSelect;
 export type InsertDailyLog = typeof dailyLogs.$inferInsert;
+
+/**
+ * People: Tracked individuals in the user's life
+ * FRM (Friends/Family/Contacts Relationship Management)
+ * Each person has a relationship type, color, and emoji avatar
+ */
+export const people = mysqlTable("people", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id),
+  /** Display name */
+  name: varchar("name", { length: 128 }).notNull(),
+  /** Emoji or initials for avatar */
+  avatar: varchar("avatar", { length: 8 }).default("👤"),
+  /** Card color (hex) */
+  color: varchar("color", { length: 16 }).default("#6366f1"),
+  /** Relationship type: family | partner | friend | doctor | official | work | other */
+  relationshipType: varchar("relationshipType", { length: 32 }).default("other"),
+  /** Phone number */
+  phone: varchar("phone", { length: 32 }),
+  /** Notes about this person */
+  notes: text("notes"),
+  /** Target contact frequency in days (0 = no target) */
+  contactFrequencyDays: int("contactFrequencyDays").default(0),
+  /** Is this person active/visible */
+  isActive: int("isActive").default(1),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Person = typeof people.$inferSelect;
+export type InsertPerson = typeof people.$inferInsert;
+
+/**
+ * Interactions: Every logged contact/event with a person
+ * Tap-to-log: no free text required — just type + quality score
+ */
+export const interactions = mysqlTable("interactions", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id),
+  personId: int("personId").notNull().references(() => people.id, { onDelete: "cascade" }),
+  /**
+   * Interaction type:
+   * talk | message | meeting | argument | good_moment | appointment | payment | task_done | task_pending
+   */
+  type: varchar("type", { length: 32 }).notNull().default("talk"),
+  /** Quality score 1-5 (1=very bad, 3=neutral, 5=very good) */
+  score: int("score").default(3),
+  /** Optional short note (not required) */
+  note: varchar("note", { length: 255 }),
+  /** Duration in minutes (optional) */
+  durationMinutes: int("durationMinutes"),
+  /** When the interaction happened */
+  happenedAt: timestamp("happenedAt").defaultNow().notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type Interaction = typeof interactions.$inferSelect;
+export type InsertInteraction = typeof interactions.$inferInsert;

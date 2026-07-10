@@ -1,6 +1,7 @@
 import { COOKIE_NAME } from "@shared/const";
 import { aiRouter } from "./routers/ai";
 import { extendedRouter } from "./routers/extended";
+import { peopleRouter } from "./routers/people";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
@@ -232,6 +233,8 @@ export const appRouter = router({
   /**
    * AI-powered suggestions: relationship suggestions and task decomposition
    */
+  /** People & Relationship Management (FRM) */
+  people: peopleRouter,
   suggestions: router({
     /**
      * Get pending relationship suggestions
@@ -262,4 +265,6 @@ export const appRouter = router({
   }),
 });
 
+// People/FRM router is merged at top level
 export type AppRouter = typeof appRouter;
+

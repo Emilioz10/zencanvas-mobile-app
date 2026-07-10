@@ -357,3 +357,27 @@
 - [x] Color-coded cells: full / partial / none
 - [x] Gap analysis: highlight missing capabilities
 - [x] Add /appmap to navigation in ModuleHub
+
+## Structured Templates from Taxonomy Files
+- [ ] Add routineTemplates table to schema (id, category, name, steps JSON, icon)
+- [ ] Add routineRuns table (id, templateId, userId, startedAt, completedSteps JSON)
+- [ ] Add tRPC procedures: templates.list, templates.getByCategory, routineRuns.start, routineRuns.updateStep
+- [ ] Build TemplatesBrowser page (/templates) with category grid
+- [ ] Pre-load all taxonomy categories: ניקיון, כביסה, בישול, כלים, ילדים, חיות, היגיינה, בריאות, כספים
+- [ ] Build RoutineRunner page (/routine/:id) with tap-to-check steps + timer
+- [ ] Each step shows: icon, Hebrew label, optional duration estimate
+- [ ] Show last completed timestamp per routine
+- [ ] Add /templates quick-access button to ModuleHub home
+
+## People & FRM Module
+- [x] Add people + interactions DB tables (migration 0007)
+- [x] Build peopleRouter with list/get/create/update/delete/logInteraction procedures
+- [x] Build PeopleHub page with person cards and last-contact timers
+- [x] Build PersonDetail page with interaction timeline and log sheet
+- [x] Add /people and /people/:id routes to App.tsx
+- [x] Add People quick-access button to ModuleHub
+
+## Location & Skills Index
+- [x] Build LocationIndex page (/locations) — where everything is stored
+- [x] Build SkillsIndex page (/skills) — visual step-by-step guides
+- [x] Add routes and quick-access buttons to ModuleHub
