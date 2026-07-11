@@ -28,6 +28,9 @@ import EntityDetail from "@/pages/EntityDetail";
 import BureaucracyTracker from "@/pages/BureaucracyTracker";
 import FinanceSnapshot from "@/pages/FinanceSnapshot";
 import DailyBrain from "@/pages/DailyBrain";
+import KnowledgeHub from "@/pages/KnowledgeHub";
+import KnowledgeEditor from "@/pages/KnowledgeEditor";
+import KnowledgeGraph from "@/pages/KnowledgeGraph";
 
 function Router() {
   const { showHelp, setShowHelp } = useKeyboardShortcuts();
@@ -59,6 +62,10 @@ function Router() {
       <Route path={"/bureaucracy"} component={BureaucracyTracker} />
       <Route path={"/finance-snapshot"} component={FinanceSnapshot} />
       <Route path={"/brain"} component={DailyBrain} />
+      <Route path={"/knowledge"} component={KnowledgeHub} />
+      <Route path={"/knowledge/graph"} component={KnowledgeGraph} />
+      <Route path={"/knowledge/new"} component={KnowledgeEditor} />
+      <Route path={"/knowledge/:id"} component={KnowledgeEditor} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

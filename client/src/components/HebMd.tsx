@@ -16,6 +16,7 @@ import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import type { Components } from "react-markdown";
 import "highlight.js/styles/github.css";
+import MermaidBlock from "./MermaidBlock";
 
 // ── Callout detection ────────────────────────────────────────────────────────
 const CALLOUT_REGEX = /^\[!(NOTE|WARNING|IMPORTANT|TIP|CAUTION)\]\s*(.*)/i;
@@ -233,22 +234,32 @@ const components: Components = {
     );
   },
 
-  pre: ({ children }) => (
-    <pre
-      style={{
-        background: "#f8fafc",
-        border: "1px solid #e2e8f0",
-        borderRadius: 10,
-        padding: "12px 16px",
-        overflowX: "auto",
-        margin: "0.75em 0",
-        direction: "ltr",
-        textAlign: "left",
-      }}
-    >
-      {children}
-    </pre>
-  ),
+  pre: ({ children }) => {
+    // Check if this is a mermaid block
+    const child = React.Children.toArray(children)[0] as React.ReactElement<{ className?: string; children?: React.ReactNode }> | undefined;
+    const className = child?.props?.className ?? "";
+    const isMermaid = typeof className === "string" && className.includes("language-mermaid");
+    if (isMermaid) {
+      const code = String(child?.props?.children ?? "").trim();
+      return <MermaidBlock code={code} />;
+    }
+    return (
+      <pre
+        style={{
+          background: "#f8fafc",
+          border: "1px solid #e2e8f0",
+          borderRadius: 10,
+          padding: "12px 16px",
+          overflowX: "auto",
+          margin: "0.75em 0",
+          direction: "ltr",
+          textAlign: "left",
+        }}
+      >
+        {children}
+      </pre>
+    );
+  },
 
   // Lists
   ul: ({ children }) => (

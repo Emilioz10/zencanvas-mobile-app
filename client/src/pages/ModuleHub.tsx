@@ -209,23 +209,38 @@ export default function ModuleHub() {
         </button>
       </div>
 
-      {/* Row: Entities (knowledge graph) */}
+      {/* Row: Knowledge Hub — the main tool */}
       <div style={{ padding: "4px 16px 4px", display: "flex", gap: 10 }}>
         <button
-          onClick={() => setLocation("/entities")}
+          onClick={() => setLocation("/knowledge")}
           style={{
-            flex: 1, padding: "14px 12px", borderRadius: 14,
-            background: "linear-gradient(135deg, #eef2ff, #e0e7ff)",
-            border: "1.5px solid #a5b4fc",
+            flex: 1, padding: "18px 16px", borderRadius: 16,
+            background: "linear-gradient(135deg, #312e81, #4338ca)",
+            border: "2px solid #6366f1",
             cursor: "pointer", textAlign: "right", direction: "rtl",
-            display: "flex", alignItems: "center", gap: 10,
+            display: "flex", alignItems: "center", gap: 12,
+            boxShadow: "0 4px 16px rgba(99,102,241,0.3)",
           }}
         >
-          <div style={{ fontSize: 28 }}>🗂️</div>
+          <div style={{ fontSize: 32 }}>🧠</div>
           <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#3730a3" }}>אובייקטים</div>
-            <div style={{ fontSize: 11, color: "#4338ca" }}>ידע · חובות · אנשים · מסמכים</div>
+            <div style={{ fontWeight: 800, fontSize: 16, color: "#fff" }}>מרכז הידע</div>
+            <div style={{ fontSize: 12, color: "#a5b4fc" }}>Obsidian + Capacities בעברית</div>
+            <div style={{ fontSize: 11, color: "#818cf8", marginTop: 2 }}>Markdown · Mermaid · קישורים · AI</div>
           </div>
+        </button>
+        <button
+          onClick={() => setLocation("/knowledge/graph")}
+          style={{
+            padding: "18px 14px", borderRadius: 16,
+            background: "linear-gradient(135deg, #1e1b4b, #312e81)",
+            border: "2px solid #4338ca",
+            cursor: "pointer", textAlign: "center",
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4,
+          }}
+        >
+          <div style={{ fontSize: 28 }}>🕸️</div>
+          <div style={{ fontSize: 11, color: "#a5b4fc", fontWeight: 700 }}>גרף</div>
         </button>
       </div>
 
