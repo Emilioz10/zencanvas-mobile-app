@@ -22,7 +22,9 @@ import LocationIndex from "./pages/LocationIndex";
 import SkillsIndex from "./pages/SkillsIndex";
 import PeopleHub from "./pages/PeopleHub";
 import PersonDetail from "./pages/PersonDetail";
-import VoicenotesGuide from "./pages/VoicenotesGuide";
+import VoicenotesGuide from "@/pages/VoicenotesGuide";
+import EntityHub from "@/pages/EntityHub";
+import EntityDetail from "@/pages/EntityDetail";
 
 function Router() {
   const { showHelp, setShowHelp } = useKeyboardShortcuts();
@@ -49,6 +51,8 @@ function Router() {
       <Route path={"/people"} component={PeopleHub} />
       <Route path={"/people/:id"} component={PersonDetail} />
       <Route path={"/voicenotes-guide"} component={VoicenotesGuide} />
+      <Route path={"/entities"} component={EntityHub} />
+      <Route path={"/entity/:id"} component={EntityDetail} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

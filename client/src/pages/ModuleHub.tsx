@@ -153,6 +153,26 @@ export default function ModuleHub() {
         </button>
       </div>
 
+      {/* Row: Entities (knowledge graph) */}
+      <div style={{ padding: "4px 16px 4px", display: "flex", gap: 10 }}>
+        <button
+          onClick={() => setLocation("/entities")}
+          style={{
+            flex: 1, padding: "14px 12px", borderRadius: 14,
+            background: "linear-gradient(135deg, #eef2ff, #e0e7ff)",
+            border: "1.5px solid #a5b4fc",
+            cursor: "pointer", textAlign: "right", direction: "rtl",
+            display: "flex", alignItems: "center", gap: 10,
+          }}
+        >
+          <div style={{ fontSize: 28 }}>🗂️</div>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#3730a3" }}>אובייקטים</div>
+            <div style={{ fontSize: 11, color: "#4338ca" }}>ידע · חובות · אנשים · מסמכים</div>
+          </div>
+        </button>
+      </div>
+
       {/* Third row: Voicenotes guide */}
       <div style={{ display: "flex", gap: 10, padding: "0 16px 10px" }}>
         <button

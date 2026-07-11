@@ -321,3 +321,55 @@ export const interactions = mysqlTable("interactions", {
 
 export type Interaction = typeof interactions.$inferSelect;
 export type InsertInteraction = typeof interactions.$inferInsert;
+
+/**
+ * Entities: Ontological objects — the real knowledge graph nodes
+ * Each entity has a type, name, properties (JSON), and Markdown body
+ * Types: person | document | task | project | medication | money | place | event | concept | tool
+ */
+export const entities = mysqlTable("entities", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id),
+  /** Entity type — determines which properties are shown */
+  entityType: varchar("entityType", { length: 64 }).notNull().default("concept"),
+  /** Display name — the primary label */
+  name: varchar("name", { length: 255 }).notNull(),
+  /** Emoji icon for visual identification */
+  icon: varchar("icon", { length: 8 }).default("📌"),
+  /** Card color (hex) for visual differentiation */
+  color: varchar("color", { length: 16 }).default("#6366f1"),
+  /** Markdown body — rendered with HebMd, supports GFM + callouts + wikilinks */
+  body: text("body"),
+  /** JSON object of typed properties per entity type */
+  properties: text("properties"),
+  /** Status: active | archived | draft */
+  status: varchar("status", { length: 32 }).default("active"),
+  /** Tags: comma-separated */
+  tags: text("tags"),
+  /** Life domain: health | money | family | work | admin | self */
+  domain: varchar("domain", { length: 64 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type Entity = typeof entities.$inferSelect;
+export type InsertEntity = typeof entities.$inferInsert;
+
+/**
+ * Entity Links: Typed bi-directional relationships between entities
+ * link types: related | depends_on | blocks | part_of | references | caused_by | resolves | owns
+ */
+export const entityLinks = mysqlTable("entityLinks", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull().references(() => users.id),
+  fromEntityId: int("fromEntityId").notNull().references(() => entities.id, { onDelete: "cascade" }),
+  toEntityId: int("toEntityId").notNull().references(() => entities.id, { onDelete: "cascade" }),
+  /** Link type — semantic relationship */
+  linkType: varchar("linkType", { length: 64 }).notNull().default("related"),
+  /** Optional short label shown on the connection */
+  label: varchar("label", { length: 128 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type EntityLink = typeof entityLinks.$inferSelect;
+export type InsertEntityLink = typeof entityLinks.$inferInsert;

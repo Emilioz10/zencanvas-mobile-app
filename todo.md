@@ -85,6 +85,17 @@
 
 ## 📋 NOT YET IMPLEMENTED
 
+- [x] HebMd component — Hebrew-first GitHub Flavored Markdown renderer (react-markdown + remark-gfm + rehype-highlight)
+- [x] H1-H5 Hebrew heading hierarchy per user spec (היררכיית-כותרות-בעברית.jpg)
+- [x] Colored callout blocks: NOTE / WARNING / IMPORTANT / TIP / CAUTION
+- [x] Wikilinks [[title]] → /search?q=title
+- [x] RTL auto-detection in all Markdown paragraphs
+- [x] entities DB table (ontological objects with type, name, body, properties, domain, tags, color)
+- [x] entityLinks DB table (typed bi-directional relationships)
+- [x] entities tRPC router (list, get, create, update, delete, link, unlink)
+- [x] EntityHub page (/entities) — browse, filter by type/domain, search, quick-create
+- [x] EntityDetail page (/entity/:id) — view/edit entity, Markdown body with HebMd, linked entities panel
+- [x] Entities button on ModuleHub home screen
 - [ ] Real-time collaboration
 - [ ] Export/import functionality
 - [ ] Advanced search across all nodes

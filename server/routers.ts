@@ -1,5 +1,6 @@
 import { COOKIE_NAME } from "@shared/const";
 import { aiRouter } from "./routers/ai";
+import { entitiesRouter } from "./routers/entities";
 import { extendedRouter } from "./routers/extended";
 import { peopleRouter } from "./routers/people";
 import { getSessionCookieOptions } from "./_core/cookies";
@@ -24,6 +25,7 @@ import {
 export const appRouter = router({
   system: systemRouter,
   ai: aiRouter,
+  entities: entitiesRouter,
   lifeDomains: extendedRouter.lifeDomains,
   nodeMetadata: extendedRouter.nodeMetadata,
   taskDependencies: extendedRouter.taskDependencies,
