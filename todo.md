@@ -398,3 +398,29 @@
 - [x] Build VoicenotesGuide page with specific phrasing patterns for each topic
 - [x] Add VoicenotesGuide route to App.tsx
 - [x] Add Voicenotes guide + AppMap buttons to ModuleHub third row
+
+## 🔴 URGENT BUILD — Based on actual user context (Jul 2026)
+
+### Bureaucracy Tracker (מעקב בירוקרטיה)
+- [x] Add "bureaucracy" module template to entityTemplates.ts (fields: agency, case_number, status, deadline, next_action, phone, required_docs, notes)
+- [x] Build BureaucracyTracker page (/bureaucracy) — dedicated view with traffic-light status, deadlines, and next actions
+- [x] Pre-seed real open cases: טופס 161 + פיצויים, ביטוח לאומי חוב 823₪, מס הכנסה אסמכתא 14463374, Keep 112.1₪, חיסון כלבת פיצ' 16/06/2026, חידוש תעודת זהות
+- [x] Show days-until-deadline badge on each case
+- [x] "מה הצעד הבא" — single most urgent action at top of screen
+
+### Financial Snapshot (תמונת מצב כספית)
+- [x] Add "debt" module template (fields: creditor, amount, due_date, status, payment_phone, reference)
+- [x] Build FinanceSnapshot page (/finance-snapshot) — live calculation: income vs obligations
+- [x] Show: קצבת נכות 2,800₪, חוב ביטוח לאומי 823₪, Keep 112.1₪, פיצויים תקועים ~280,000₪
+- [x] NoteCalc-style: typed text → live sum in margin
+
+### Daily Brain (מוח יומי)
+- [x] Build DailyBrain page (/brain) — today's 3 most important things, dog schedule, medication reminder, baby status
+- [x] Quick-add voice note transcription (upload audio → Whisper → save as note)
+- [x] "עכשיו" button — what is the single next physical action right now
+
+### Home Screen Redesign
+- [x] Add Bureaucracy Tracker button to ModuleHub (red/urgent color if any deadline within 7 days)
+- [x] Add Financial Snapshot button to ModuleHub
+- [x] Add Daily Brain button to ModuleHub
+- [x] Show urgency count badge on relevant buttons

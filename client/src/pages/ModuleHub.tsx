@@ -153,6 +153,62 @@ export default function ModuleHub() {
         </button>
       </div>
 
+      {/* Row: Brain + Bureaucracy */}
+      <div style={{ padding: "4px 16px 4px", display: "flex", gap: 10 }}>
+        <button
+          onClick={() => setLocation("/brain")}
+          style={{
+            flex: 1, padding: "14px 12px", borderRadius: 14,
+            background: "linear-gradient(135deg, #1e293b, #334155)",
+            border: "1.5px solid #475569",
+            cursor: "pointer", textAlign: "right", direction: "rtl",
+            display: "flex", alignItems: "center", gap: 10,
+          }}
+        >
+          <div style={{ fontSize: 28 }}>🧠</div>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#f1f5f9" }}>המוח היומי</div>
+            <div style={{ fontSize: 11, color: "#94a3b8" }}>עכשיו · פיצ' · הערה</div>
+          </div>
+        </button>
+        <button
+          onClick={() => setLocation("/bureaucracy")}
+          style={{
+            flex: 1, padding: "14px 12px", borderRadius: 14,
+            background: "linear-gradient(135deg, #fef2f2, #fee2e2)",
+            border: "1.5px solid #fca5a5",
+            cursor: "pointer", textAlign: "right", direction: "rtl",
+            display: "flex", alignItems: "center", gap: 10,
+          }}
+        >
+          <div style={{ fontSize: 28 }}>🏛️</div>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#991b1b" }}>בירוקרטיה</div>
+            <div style={{ fontSize: 11, color: "#dc2626" }}>161 · ביטוח לאומי · מס</div>
+          </div>
+        </button>
+      </div>
+
+      {/* Row: Finance Snapshot */}
+      <div style={{ padding: "4px 16px 4px", display: "flex", gap: 10 }}>
+        <button
+          onClick={() => setLocation("/finance-snapshot")}
+          style={{
+            flex: 1, padding: "14px 12px", borderRadius: 14,
+            background: "linear-gradient(135deg, #f0fdf4, #dcfce7)",
+            border: "1.5px solid #86efac",
+            cursor: "pointer", textAlign: "right", direction: "rtl",
+            display: "flex", alignItems: "center", gap: 10,
+          }}
+        >
+          <div style={{ fontSize: 28 }}>💰</div>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#15803d" }}>תמונת מצב כספית</div>
+            <div style={{ fontSize: 11, color: "#16a34a" }}>2,800₪ קצבה · חובות · פיצויים</div>
+          </div>
+        </button>
+      </div>
+
       {/* Row: Entities (knowledge graph) */}
       <div style={{ padding: "4px 16px 4px", display: "flex", gap: 10 }}>
         <button
