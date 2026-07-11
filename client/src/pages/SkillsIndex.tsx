@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Search, Zap, ChevronLeft, X, CheckCircle2, Circle } from "lucide-react";
+import { ArrowRight, Search, Zap, X, CheckCircle2, Circle, ChevronRight } from "lucide-react";
 
 // ─── Types ─────────────────────────────────────────────────────────────────
 
@@ -10,7 +10,7 @@ interface Step {
   icon: string;
   text: string;
   detail?: string;
-  duration?: string; // e.g. "30 שניות"
+  duration?: string;
 }
 
 interface Skill {
@@ -18,105 +18,252 @@ interface Skill {
   title: string;
   emoji: string;
   color: string;
-  category: "home" | "baby" | "dog" | "health" | "money" | "communication" | "self";
+  category: string;
   categoryLabel: string;
-  duration: string; // total estimated time
+  duration: string;
   difficulty: "קל" | "בינוני" | "קשה";
   steps: Step[];
+  subTasks?: string[]; // sub-items from taxonomy
 }
 
-// ─── Skills Data ────────────────────────────────────────────────────────────
+// ─── Real Taxonomy from pasted_content.txt ─────────────────────────────────
 
 const SKILLS: Skill[] = [
+  // ── בית / ניקיון ──────────────────────────────────────────────────────────
   {
     id: "dishes",
     title: "שטיפת כלים",
     emoji: "🍽️",
     color: "#0ea5e9",
-    category: "home",
-    categoryLabel: "🏠 בית",
+    category: "home-cleaning",
+    categoryLabel: "🧹 ניקיון",
     duration: "10-15 דקות",
     difficulty: "קל",
+    subTasks: ["שטיפת כלים אחרי ארוחת ערב", "שטיפת כלים אחרי ארוחת צהריים", "ייבוש כלים", "מילוי מדיח", "ריקון מדיח"],
     steps: [
-      { icon: "🪣", text: "מלא את הכיור במים חמים", detail: "טמפרטורה נסבלת לידיים", duration: "30 שניות" },
+      { icon: "🪣", text: "מלא כיור במים חמים", detail: "טמפרטורה נסבלת לידיים", duration: "30 שניות" },
       { icon: "🧴", text: "הוסף כמה טיפות נוזל כלים", detail: "לא יותר מדי — יוצר קצף מיותר" },
-      { icon: "🥄", text: "שים כלים קטנים ראשונה", detail: "כפות, מזלגות, סכינים" },
-      { icon: "🧽", text: "שפשף עם ספוג מהפנים החוצה", detail: "כוסות: בפנים → בחוץ → שפה" },
+      { icon: "🥄", text: "כלים קטנים ראשונה", detail: "כפות, מזלגות, סכינים" },
+      { icon: "🧽", text: "שפשף מהפנים החוצה", detail: "כוסות: פנים → חוץ → שפה" },
       { icon: "🍳", text: "סירים ומחבתות — בסוף", detail: "השרה 5 דקות אם יש שאריות" },
       { icon: "🚿", text: "שטוף עם מים קרים", detail: "מים קרים מסירים סבון טוב יותר" },
       { icon: "🏗️", text: "הנח על מייבש כלים", detail: "פנים כלפי מטה לניקוז" },
     ],
   },
   {
+    id: "tidy-kitchen",
+    title: "סידור המטבח",
+    emoji: "🍽️",
+    color: "#0ea5e9",
+    category: "home-cleaning",
+    categoryLabel: "🧹 ניקיון",
+    duration: "10 דקות",
+    difficulty: "קל",
+    subTasks: ["סידור הסלון", "ניגוב ונקוי משטחים", "ריקון פח האשפה", "מיחזור"],
+    steps: [
+      { icon: "🗑️", text: "ריקן פח אשפה אם מלא" },
+      { icon: "🧽", text: "נגב משטחים עם מטלית לחה" },
+      { icon: "📦", text: "החזר כל דבר למקומו" },
+      { icon: "🪣", text: "שטוף כיור" },
+      { icon: "✅", text: "בדוק שהכל במקום" },
+    ],
+  },
+  {
+    id: "cleaning-toilet",
+    title: "ניקוי שירותים",
+    emoji: "🚽",
+    color: "#0ea5e9",
+    category: "home-cleaning",
+    categoryLabel: "🧹 ניקיון",
+    duration: "10 דקות",
+    difficulty: "קל",
+    subTasks: ["ניקוי כיור", "ניקוי מקלחת / אמבטיה", "ניקוי חלונות", "ניקוי מקרר"],
+    steps: [
+      { icon: "🧤", text: "הרכב כפפות ניקיון" },
+      { icon: "🧴", text: "הוסף חומר ניקוי לאסלה", detail: "השאר לפעול 5 דקות" },
+      { icon: "🧽", text: "נגב משטחים ומראה" },
+      { icon: "🚽", text: "שפשף אסלה עם מברשת" },
+      { icon: "🪣", text: "שטוף כיור" },
+      { icon: "🧻", text: "החלף נייר טואלט אם נגמר" },
+    ],
+  },
+  {
+    id: "vacuuming",
+    title: "שאיבת אבק",
+    emoji: "🌀",
+    color: "#0ea5e9",
+    category: "home-cleaning",
+    categoryLabel: "🧹 ניקיון",
+    duration: "20 דקות",
+    difficulty: "קל",
+    steps: [
+      { icon: "🪑", text: "הזז ריהוט קטן לצד" },
+      { icon: "🌀", text: "שאב מהפינות לאמצע" },
+      { icon: "🚪", text: "התחל מהחדרים הפנימיים" },
+      { icon: "🏠", text: "סיים בסלון ומסדרון" },
+      { icon: "🗑️", text: "רוקן שקית שואב אם מלאה" },
+    ],
+  },
+
+  // ── כביסה ─────────────────────────────────────────────────────────────────
+  {
+    id: "laundry-full",
+    title: "כביסה מלאה",
+    emoji: "🧺",
+    color: "#8b5cf6",
+    category: "home-laundry",
+    categoryLabel: "🧺 כביסה",
+    duration: "2-3 שעות",
+    difficulty: "קל",
+    subTasks: ["מילוי מכונה", "ריקון מכונה", "הורדה מהמתלה", "הכנסה לארון", "גיהוץ", "החלפת מצעים", "החלפת מגבות"],
+    steps: [
+      { icon: "🗂️", text: "מיין: לבן / צבעוני / כהה", detail: "אל תערבב לבן עם צבעוני!" },
+      { icon: "🔍", text: "בדוק כיסים", detail: "רקמות, מטבעות, אוזניות" },
+      { icon: "🔄", text: "הפוך ג'ינסים וחולצות כהות", detail: "שומר על הצבע" },
+      { icon: "🧴", text: "הוסף אבקת כביסה", detail: "לפי הוראות — לא יותר!" },
+      { icon: "🌡️", text: "בחר טמפרטורה", detail: "30° לרגיל, 60° למגבות ובגדי תינוק" },
+      { icon: "▶️", text: "הפעל מכונה", detail: "מחזור רגיל: 1:30 שעות" },
+      { icon: "⏰", text: "הוצא מיד כשנגמר", detail: "אל תשאיר — מתעפש" },
+      { icon: "📌", text: "תלה מיד — אל תקפל לח" },
+    ],
+  },
+
+  // ── בישול ─────────────────────────────────────────────────────────────────
+  {
+    id: "breakfast",
+    title: "הכנת ארוחת בוקר",
+    emoji: "🥞",
+    color: "#f59e0b",
+    category: "home-cooking",
+    categoryLabel: "🍳 בישול",
+    duration: "10-20 דקות",
+    difficulty: "קל",
+    subTasks: ["בישול ארוחת צהריים", "הכנת ארוחת ערב"],
+    steps: [
+      { icon: "🫖", text: "הרתח מים לקפה / תה" },
+      { icon: "🍞", text: "הכן לחם / טוסט" },
+      { icon: "🥚", text: "הכן ביצה / גבינה / ממרח" },
+      { icon: "🍽️", text: "ערוך שולחן" },
+      { icon: "💊", text: "קח תרופות בוקר עם אוכל", detail: "אטנט — חובה עם אוכל" },
+    ],
+  },
+
+  // ── קניות ─────────────────────────────────────────────────────────────────
+  {
+    id: "grocery",
+    title: "קניות סופרמרקט",
+    emoji: "🛒",
+    color: "#f97316",
+    category: "home-errands",
+    categoryLabel: "🛒 סידורים",
+    duration: "30-45 דקות",
+    difficulty: "בינוני",
+    subTasks: ["קניית חיתולים לרני"],
+    steps: [
+      { icon: "📋", text: "בדוק מה חסר לפני יציאה", detail: "מקרר + מזווה + שירותים" },
+      { icon: "📱", text: "פתח רשימת קניות" },
+      { icon: "🧺", text: "קח שקיות מהבית", detail: "3-4 שקיות בדרך כלל מספיקות" },
+      { icon: "🥦", text: "התחל מירקות ופירות" },
+      { icon: "🥛", text: "מוצרי חלב — לקראת הסוף" },
+      { icon: "❄️", text: "קפואים — אחרון לפני קופה" },
+      { icon: "🧾", text: "שמור קבלה", detail: "לבדיקת חיובים בכרטיס" },
+    ],
+  },
+
+  // ── ילדים / רני ───────────────────────────────────────────────────────────
+  {
     id: "baby-feeding",
     title: "האכלת רני",
     emoji: "👶",
     color: "#f59e0b",
-    category: "baby",
-    categoryLabel: "👶 רני",
+    category: "kids",
+    categoryLabel: "👶 ילדים",
     duration: "20-30 דקות",
     difficulty: "בינוני",
+    subTasks: ["הכנת בקבוק", "גרגור", "החלפת חיתול", "השכבה לישון"],
     steps: [
       { icon: "🧼", text: "שטוף ידיים", detail: "לפחות 20 שניות", duration: "20 שניות" },
       { icon: "🍼", text: "הכן בקבוק: 90 מ\"ל מים", detail: "מים מינרליים או מסוננים" },
       { icon: "🌡️", text: "חמם מים ל-40°C", detail: "בדוק עם מדחום — לא יותר!" },
       { icon: "🥛", text: "הוסף 3 כפות מדידה אבקה", detail: "12 גרם = 3 כפות שטוחות" },
       { icon: "🔄", text: "ערבב עד שנמס לגמרי", detail: "אל תנער חזק — יוצר בועות" },
-      { icon: "✋", text: "בדוק טמפרטורה על פנים כף יד", detail: "אמור להרגיש חמים-נעים, לא חם" },
+      { icon: "✋", text: "בדוק טמפרטורה על פנים כף יד", detail: "חמים-נעים, לא חם" },
       { icon: "🤱", text: "האכל בזווית 45°", detail: "ראש גבוה מגוף, בקבוק מוטה" },
       { icon: "⏱️", text: "המתן 15-20 דקות", detail: "אל תמהר — שאיפה גורמת לגזים" },
       { icon: "🫁", text: "גרגר — הרם על כתף", detail: "טפח בעדינות על הגב 2-3 דקות" },
     ],
   },
   {
+    id: "diaper-change",
+    title: "החלפת חיתול",
+    emoji: "🧷",
+    color: "#f59e0b",
+    category: "kids",
+    categoryLabel: "👶 ילדים",
+    duration: "5 דקות",
+    difficulty: "קל",
+    steps: [
+      { icon: "🧼", text: "שטוף ידיים" },
+      { icon: "🛏️", text: "שכב רני על שטיח החלפה" },
+      { icon: "🧷", text: "פתח חיתול ישן" },
+      { icon: "🧻", text: "נגב מקדימה לאחורה", detail: "חשוב — מניע זיהום" },
+      { icon: "🧴", text: "מרח קרם הגנה אם יש אדמומיות" },
+      { icon: "🧷", text: "הרכב חיתול חדש" },
+      { icon: "🗑️", text: "זרוק חיתול ישן לפח סגור" },
+      { icon: "🧼", text: "שטוף ידיים שוב" },
+    ],
+  },
+
+  // ── חיות מחמד / פיצ' ─────────────────────────────────────────────────────
+  {
     id: "dog-walk",
     title: "טיול עם פיצ'",
-    emoji: "🐕",
+    emoji: "🦮",
     color: "#10b981",
-    category: "dog",
-    categoryLabel: "🐕 פיצ'",
+    category: "pets",
+    categoryLabel: "🐾 חיות מחמד",
     duration: "20-30 דקות",
     difficulty: "קל",
+    subTasks: ["האכלת פיצ'", "ביקור וטרינר", "ניקוי אקווריום"],
     steps: [
       { icon: "🦮", text: "קח רצועה + שקיות ניקיון", detail: "תמיד 2-3 שקיות" },
       { icon: "💧", text: "קח בקבוק מים לפיצ'", detail: "בקיץ חובה" },
       { icon: "🔒", text: "בדוק שהקולר מהודק", detail: "צריך להכנס 2 אצבעות" },
       { icon: "🚶", text: "צא מהדלת — פיצ' אחריך", detail: "לא לפניך — חשוב לסמכות" },
       { icon: "🌳", text: "הנח לו להריח בחופשיות", detail: "20-30 דקות הרחה = שעת שינה" },
-      { icon: "💩", text: "אסוף מיד עם שקית", detail: "הפוך שקית על יד, אסוף, הפוך חזרה" },
-      { icon: "🏠", text: "חזור הביתה — פיצ' נכנס אחרון", detail: "אתה נכנס ראשון" },
-      { icon: "🍶", text: "תן מים לפיצ' מיד בכניסה", detail: "קערה מלאה" },
+      { icon: "💩", text: "אסוף מיד עם שקית" },
+      { icon: "🏠", text: "חזור הביתה — פיצ' נכנס אחרון" },
+      { icon: "🍶", text: "תן מים לפיצ' מיד בכניסה" },
     ],
   },
   {
-    id: "laundry",
-    title: "כביסה",
-    emoji: "👕",
-    color: "#8b5cf6",
-    category: "home",
-    categoryLabel: "🏠 בית",
-    duration: "2-3 שעות (כולל ייבוש)",
+    id: "dog-feeding",
+    title: "האכלת פיצ'",
+    emoji: "🐕",
+    color: "#10b981",
+    category: "pets",
+    categoryLabel: "🐾 חיות מחמד",
+    duration: "5 דקות",
     difficulty: "קל",
     steps: [
-      { icon: "🗂️", text: "מיין: לבן / צבעוני / כהה", detail: "אל תערבב לבן עם צבעוני!" },
-      { icon: "🔍", text: "בדוק כיסים", detail: "רקמות, מטבעות, אוזניות" },
-      { icon: "🔄", text: "הפוך ג'ינסים וחולצות כהות", detail: "שומר על הצבע" },
-      { icon: "🧴", text: "הוסף אבקת כביסה", detail: "לפי הוראות — לא יותר!" },
-      { icon: "🌡️", text: "בחר טמפרטורה: 30° לרגיל, 60° למגבות", detail: "בגדי תינוק: 60°" },
-      { icon: "▶️", text: "הפעל מכונה", detail: "מחזור רגיל: 1:30 שעות" },
-      { icon: "⏰", text: "הוצא מיד כשנגמר", detail: "אל תשאיר — מתעפש" },
-      { icon: "📌", text: "תלה מיד — אל תקפל לח", detail: "מחלק על מייבש או חבל" },
+      { icon: "⏰", text: "בדוק שעה — האם זמן האכלה?" },
+      { icon: "🥣", text: "מלא קערה לפי הכמות הנכונה" },
+      { icon: "💧", text: "בדוק שיש מים טריים בקערה" },
+      { icon: "✅", text: "סמן שהאכלת", detail: "ביומן / אפליקציה" },
     ],
   },
+
+  // ── בריאות ────────────────────────────────────────────────────────────────
   {
     id: "medication",
     title: "לקיחת תרופות",
     emoji: "💊",
     color: "#ef4444",
     category: "health",
-    categoryLabel: "💊 בריאות",
+    categoryLabel: "🏥 בריאות",
     duration: "2 דקות",
     difficulty: "קל",
+    subTasks: ["אטנט — בוקר עם אוכל", "בדיקה רפואית שגרתית", "בדיקת שיניים שנתית"],
     steps: [
       { icon: "⏰", text: "בדוק שעה — האם זמן התרופה?", detail: "אטנט: בוקר עם אוכל" },
       { icon: "🍽️", text: "אכל משהו קטן קודם", detail: "לא על בטן ריקה" },
@@ -125,6 +272,28 @@ const SKILLS: Skill[] = [
       { icon: "✅", text: "סמן שלקחת", detail: "ביומן / אפליקציה" },
     ],
   },
+
+  // ── כספים ─────────────────────────────────────────────────────────────────
+  {
+    id: "pay-bills",
+    title: "תשלום חשבונות",
+    emoji: "💳",
+    color: "#6366f1",
+    category: "finance",
+    categoryLabel: "💵 כספים",
+    duration: "15-30 דקות",
+    difficulty: "בינוני",
+    subTasks: ["תשלום שכר דירה", "החזרי חובות", "בדיקת כרטיס אשראי"],
+    steps: [
+      { icon: "📋", text: "פתח רשימת חשבונות לתשלום" },
+      { icon: "🏦", text: "בדוק יתרה בחשבון" },
+      { icon: "💳", text: "שלם לפי סדר עדיפות", detail: "שכר דירה ראשון, אחר כך שאר" },
+      { icon: "🧾", text: "שמור אישור תשלום", detail: "צלם מסך / שמור PDF" },
+      { icon: "✅", text: "סמן כשולם ברשימה" },
+    ],
+  },
+
+  // ── תקשורת עם גורמים רשמיים ──────────────────────────────────────────────
   {
     id: "phone-call-official",
     title: "שיחה עם גורם רשמי",
@@ -134,64 +303,154 @@ const SKILLS: Skill[] = [
     categoryLabel: "📞 תקשורת",
     duration: "30-60 דקות",
     difficulty: "קשה",
+    subTasks: ["ביטוח לאומי", "מס הכנסה", "בנק", "רופא", "עורך דין"],
     steps: [
       { icon: "📝", text: "כתוב מה אתה רוצה לדעת/לקבל", detail: "שאלה אחת ברורה לפני שמתקשר" },
-      { icon: "📋", text: "הכן תעודת זהות + מסמכים רלוונטיים", detail: "תמיד שואלים ת.ז." },
+      { icon: "📋", text: "הכן תעודת זהות + מסמכים", detail: "תמיד שואלים ת.ז." },
       { icon: "🎙️", text: "הכן Voicenotes להקלטה", detail: "תמיד תקליט — לא תזכור" },
-      { icon: "📞", text: "התקשר — אמור שמך + ת.ז. בהתחלה", detail: "\"שמי X, ת.ז. XXXXXXX\"" },
+      { icon: "📞", text: "התקשר — אמור שמך + ת.ז. בהתחלה" },
       { icon: "🗣️", text: "שאל את השאלה הספציפית שלך", detail: "אל תסביר יותר מדי" },
-      { icon: "✍️", text: "כתוב: שם הנציג + מה נאמר + מספר פנייה", detail: "חשוב לתביעות עתידיות" },
+      { icon: "✍️", text: "כתוב: שם הנציג + מה נאמר + מספר פנייה" },
       { icon: "🔁", text: "חזור על מה שהבנת לנציג", detail: "\"אז מה שאמרת זה...\"" },
-      { icon: "📧", text: "בקש אישור בכתב / במייל", detail: "\"אפשר לקבל את זה בכתב?\"" },
+      { icon: "📧", text: "בקש אישור בכתב / במייל" },
     ],
   },
   {
-    id: "grocery",
-    title: "קניות סופרמרקט",
-    emoji: "🛒",
-    color: "#f97316",
-    category: "home",
-    categoryLabel: "🏠 בית",
-    duration: "30-45 דקות",
-    difficulty: "בינוני",
+    id: "write-complaint",
+    title: "כתיבת תלונה / בקשה",
+    emoji: "✉️",
+    color: "#6366f1",
+    category: "communication",
+    categoryLabel: "📞 תקשורת",
+    duration: "20-30 דקות",
+    difficulty: "קשה",
     steps: [
-      { icon: "📋", text: "בדוק מה חסר לפני יציאה", detail: "מקרר + מזווה + שירותים" },
-      { icon: "📱", text: "פתח רשימת קניות", detail: "Google Keep / WhatsApp לעצמך" },
-      { icon: "🧺", text: "קח שקיות מהבית", detail: "3-4 שקיות בדרך כלל מספיקות" },
-      { icon: "🥦", text: "התחל מירקות ופירות", detail: "מסוף החנות לתחילתה" },
-      { icon: "🥛", text: "מוצרי חלב — לקראת הסוף", detail: "שמור קר כמה שאפשר" },
-      { icon: "❄️", text: "קפואים — אחרון לפני קופה", detail: "שמור קר עד הבית" },
-      { icon: "🧾", text: "שמור קבלה", detail: "לבדיקת חיובים בכרטיס" },
+      { icon: "📝", text: "כתוב: מה קרה, מתי, מה ביקשת" },
+      { icon: "📎", text: "צרף מסמכים רלוונטיים" },
+      { icon: "📧", text: "שלח למייל הנכון", detail: "בדוק כתובת מייל רשמית" },
+      { icon: "📸", text: "צלם מסך של השליחה", detail: "ראיה שנשלח" },
+      { icon: "📅", text: "רשום תאריך ומה ציפית לקבל" },
     ],
   },
+
+  // ── היגיינה אישית ─────────────────────────────────────────────────────────
+  {
+    id: "hygiene-morning",
+    title: "שגרת בוקר — היגיינה",
+    emoji: "🚿",
+    color: "#06b6d4",
+    category: "hygiene",
+    categoryLabel: "🧼 היגיינה",
+    duration: "15-20 דקות",
+    difficulty: "קל",
+    subTasks: ["צחצוח שיניים", "רחצה ומקלחת", "תספורת"],
+    steps: [
+      { icon: "🚿", text: "מקלחת", detail: "מים חמים — לא יותר מ-10 דקות" },
+      { icon: "🪥", text: "צחצח שיניים", detail: "2 דקות — חשמלי עדיף" },
+      { icon: "🧴", text: "קרם פנים / גוף" },
+      { icon: "👕", text: "לבש בגדים נקיים" },
+      { icon: "💊", text: "קח תרופות בוקר", detail: "אטנט — עם אוכל" },
+    ],
+  },
+
+  // ── שגרת שינה ─────────────────────────────────────────────────────────────
   {
     id: "sleep-routine",
     title: "שגרת שינה",
     emoji: "😴",
     color: "#1d4ed8",
     category: "self",
-    categoryLabel: "🧘 עצמי",
+    categoryLabel: "🧘 טיפוח עצמי",
     duration: "30 דקות לפני שינה",
     difficulty: "בינוני",
     steps: [
       { icon: "📵", text: "סגור מסכים שעה לפני", detail: "מסך = מוח ער" },
-      { icon: "💊", text: "קח תרופות ערב אם יש", detail: "בדוק רשימה" },
+      { icon: "💊", text: "קח תרופות ערב אם יש" },
       { icon: "🦷", text: "צחצח שיניים + שטוף פנים", detail: "2 דקות צחצוח" },
       { icon: "🌡️", text: "חדר קריר — 18-20°", detail: "שינה טובה יותר בקור" },
-      { icon: "🌑", text: "חושך מלא או מסכת עיניים", detail: "מלטונין מופרש בחושך" },
-      { icon: "📱", text: "טלפון על שקט + מרחק יד", detail: "לא על הראש — רק להשכמה" },
+      { icon: "🌑", text: "חושך מלא או מסכת עיניים" },
+      { icon: "📱", text: "טלפון על שקט + מרחק יד" },
+    ],
+  },
+
+  // ── ספורט ─────────────────────────────────────────────────────────────────
+  {
+    id: "workout",
+    title: "אימון גופני",
+    emoji: "💪",
+    color: "#10b981",
+    category: "sport",
+    categoryLabel: "🏋️ ספורט",
+    duration: "30-60 דקות",
+    difficulty: "בינוני",
+    subTasks: ["הליכה למכון כושר", "ביצוע אימון גופני"],
+    steps: [
+      { icon: "💧", text: "שתה מים לפני", detail: "לפחות כוס אחת" },
+      { icon: "🤸", text: "חימום 5 דקות", detail: "קפיצות קטנות, מתיחות" },
+      { icon: "💪", text: "בצע את האימון", detail: "לפי תוכנית" },
+      { icon: "🧘", text: "קירור 5 דקות", detail: "מתיחות איטיות" },
+      { icon: "💧", text: "שתה מים אחרי" },
+    ],
+  },
+
+  // ── רכב ───────────────────────────────────────────────────────────────────
+  {
+    id: "car-check",
+    title: "בדיקת רכב תקופתית",
+    emoji: "🚗",
+    color: "#64748b",
+    category: "car",
+    categoryLabel: "🚗 רכב",
+    duration: "30 דקות",
+    difficulty: "בינוני",
+    subTasks: ["החלפת מגבים", "החלפת גלגלים"],
+    steps: [
+      { icon: "📋", text: "בדוק תאריך טיפול אחרון" },
+      { icon: "🔧", text: "קבע תור לגראז'" },
+      { icon: "📄", text: "הכן מסמכי רכב", detail: "רישיון רכב + ביטוח" },
+      { icon: "🔑", text: "לך לטיפול" },
+      { icon: "📅", text: "רשום תאריך הטיפול הבא" },
+    ],
+  },
+
+  // ── ארגון ─────────────────────────────────────────────────────────────────
+  {
+    id: "organize-documents",
+    title: "ארגון מסמכים",
+    emoji: "📂",
+    color: "#f59e0b",
+    category: "organization",
+    categoryLabel: "📅 ארגון",
+    duration: "30-60 דקות",
+    difficulty: "קשה",
+    subTasks: ["מסמכים רפואיים", "מסמכים פיננסיים", "מסמכים משפטיים", "תעודות"],
+    steps: [
+      { icon: "🗂️", text: "אסוף כל המסמכים למקום אחד" },
+      { icon: "📋", text: "מיין לקטגוריות", detail: "רפואי / פיננסי / משפטי / אישי" },
+      { icon: "📸", text: "צלם כל מסמך חשוב", detail: "שמור בGoogle Drive / תיקייה" },
+      { icon: "📁", text: "שמור פיזית בתיקיות ממוינות" },
+      { icon: "✅", text: "רשום איפה כל דבר נמצא" },
     ],
   },
 ];
 
-const CATEGORY_LABELS: Record<string, string> = {
-  home: "🏠 בית",
-  baby: "👶 רני",
-  dog: "🐕 פיצ'",
-  health: "💊 בריאות",
-  money: "💰 כסף",
-  communication: "📞 תקשורת",
-  self: "🧘 עצמי",
+// ─── Category config ────────────────────────────────────────────────────────
+
+const CATEGORIES: Record<string, { label: string; emoji: string; color: string }> = {
+  "home-cleaning": { label: "ניקיון", emoji: "🧹", color: "#0ea5e9" },
+  "home-laundry":  { label: "כביסה", emoji: "🧺", color: "#8b5cf6" },
+  "home-cooking":  { label: "בישול", emoji: "🍳", color: "#f59e0b" },
+  "home-errands":  { label: "סידורים", emoji: "🛒", color: "#f97316" },
+  kids:            { label: "ילדים", emoji: "👶", color: "#f59e0b" },
+  pets:            { label: "חיות מחמד", emoji: "🐾", color: "#10b981" },
+  health:          { label: "בריאות", emoji: "🏥", color: "#ef4444" },
+  finance:         { label: "כספים", emoji: "💵", color: "#6366f1" },
+  communication:   { label: "תקשורת", emoji: "📞", color: "#6366f1" },
+  hygiene:         { label: "היגיינה", emoji: "🧼", color: "#06b6d4" },
+  self:            { label: "טיפוח עצמי", emoji: "🧘", color: "#1d4ed8" },
+  sport:           { label: "ספורט", emoji: "🏋️", color: "#10b981" },
+  car:             { label: "רכב", emoji: "🚗", color: "#64748b" },
+  organization:    { label: "ארגון", emoji: "📅", color: "#f59e0b" },
 };
 
 // ─── Step Runner Component ──────────────────────────────────────────────────
@@ -228,41 +487,59 @@ function StepRunner({ skill, onClose }: { skill: Skill; onClose: () => void }) {
       </div>
 
       {/* Progress bar */}
-      <div className="h-1 bg-muted">
+      <div className="h-1.5 bg-muted">
         <div
-          className="h-full bg-primary transition-all duration-300"
-          style={{ width: `${((currentStep + 1) / skill.steps.length) * 100}%` }}
+          className="h-full transition-all duration-300"
+          style={{
+            width: `${((currentStep + 1) / skill.steps.length) * 100}%`,
+            backgroundColor: skill.color,
+          }}
         />
       </div>
+
+      {/* Sub-tasks hint */}
+      {skill.subTasks && skill.subTasks.length > 0 && (
+        <div className="px-4 py-2 bg-muted/50 border-b border-border">
+          <div className="text-xs text-muted-foreground mb-1">פעולות קשורות:</div>
+          <div className="flex gap-2 overflow-x-auto no-scrollbar">
+            {skill.subTasks.map((t, i) => (
+              <span key={i} className="flex-shrink-0 text-xs bg-background border border-border rounded-full px-2 py-0.5">
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Current step */}
       <div className="flex-1 flex flex-col items-center justify-center px-8 text-center">
         <div className="text-7xl mb-6">{step.icon}</div>
         <div className="text-2xl font-bold mb-3">{step.text}</div>
         {step.detail && (
-          <div className="text-muted-foreground text-base bg-muted rounded-xl px-4 py-3">
+          <div className="text-muted-foreground text-base bg-muted rounded-xl px-4 py-3 max-w-xs">
             {step.detail}
           </div>
         )}
         {step.duration && (
-          <div className="mt-3 text-sm text-primary font-medium">⏱️ {step.duration}</div>
+          <div className="mt-3 text-sm font-medium" style={{ color: skill.color }}>⏱️ {step.duration}</div>
         )}
       </div>
 
-      {/* Step list overview */}
-      <div className="border-t border-border px-4 py-2 max-h-32 overflow-y-auto">
-        <div className="flex gap-2 overflow-x-auto pb-1">
+      {/* Step overview strip */}
+      <div className="border-t border-border px-4 py-2 max-h-28 overflow-y-auto">
+        <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
           {skill.steps.map((s, i) => (
             <button
               key={i}
-              onClick={() => { setCurrentStep(i); toggleComplete(i); }}
+              onClick={() => setCurrentStep(i)}
               className={`flex-shrink-0 flex flex-col items-center gap-1 p-2 rounded-lg transition-colors ${
                 i === currentStep
-                  ? "bg-primary/10 border border-primary"
+                  ? "border-2"
                   : completed.has(i)
                   ? "bg-green-500/10 border border-green-500/30"
                   : "bg-muted"
               }`}
+              style={i === currentStep ? { borderColor: skill.color, backgroundColor: `${skill.color}15` } : {}}
             >
               <span className="text-xl">{s.icon}</span>
               {completed.has(i) ? (
@@ -297,8 +574,8 @@ function StepRunner({ skill, onClose }: { skill: Skill; onClose: () => void }) {
               toggleComplete(currentStep);
               if (!isLast) setCurrentStep(currentStep + 1);
             }}
-            className="flex-1 py-3 rounded-xl text-sm font-bold"
-            style={{ backgroundColor: skill.color, color: "white" }}
+            className="flex-1 py-3 rounded-xl text-sm font-bold text-white"
+            style={{ backgroundColor: skill.color }}
           >
             {isLast ? "סיים ✓" : "הבא →"}
           </button>
@@ -320,12 +597,13 @@ export default function SkillsIndex() {
     const matchesSearch =
       !search ||
       s.title.includes(search) ||
-      s.steps.some((step) => step.text.includes(search));
+      s.steps.some((step) => step.text.includes(search)) ||
+      (s.subTasks || []).some((t) => t.includes(search));
     const matchesCategory = !selectedCategory || s.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
-  const categories = Array.from(new Set(SKILLS.map((s) => s.category)));
+  const usedCategories = Array.from(new Set(SKILLS.map((s) => s.category)));
 
   if (activeSkill) {
     return <StepRunner skill={activeSkill} onClose={() => setActiveSkill(null)} />;
@@ -346,6 +624,7 @@ export default function SkillsIndex() {
             <Zap className="w-5 h-5 text-primary" />
             <h1 className="text-lg font-bold">מה אני יודע לעשות</h1>
           </div>
+          <span className="text-xs text-muted-foreground mr-auto">{SKILLS.length} פעולות</span>
         </div>
 
         <div className="relative mb-3">
@@ -367,52 +646,76 @@ export default function SkillsIndex() {
           >
             הכל
           </button>
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}
-              className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                selectedCategory === cat ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
-              }`}
-            >
-              {CATEGORY_LABELS[cat]}
-            </button>
-          ))}
+          {usedCategories.map((cat) => {
+            const cfg = CATEGORIES[cat];
+            return (
+              <button
+                key={cat}
+                onClick={() => setSelectedCategory(selectedCategory === cat ? null : cat)}
+                className={`flex-shrink-0 px-3 py-1 rounded-full text-xs font-medium transition-colors ${
+                  selectedCategory === cat ? "text-white" : "bg-muted text-muted-foreground"
+                }`}
+                style={selectedCategory === cat ? { backgroundColor: cfg?.color } : {}}
+              >
+                {cfg?.emoji} {cfg?.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Skill grid */}
       <div className="p-4 grid grid-cols-2 gap-3">
-        {filtered.map((skill) => (
-          <button
-            key={skill.id}
-            onClick={() => setActiveSkill(skill)}
-            className="rounded-xl border border-border bg-card p-4 text-right flex flex-col gap-2 active:scale-95 transition-transform"
-            style={{ borderTopColor: skill.color, borderTopWidth: 3 }}
-          >
-            <div className="text-3xl">{skill.emoji}</div>
-            <div className="font-semibold text-sm leading-tight">{skill.title}</div>
-            <div className="flex items-center justify-between mt-auto">
-              <Badge
-                variant="secondary"
-                className="text-xs"
-                style={{ backgroundColor: `${skill.color}20`, color: skill.color }}
-              >
-                {skill.difficulty}
-              </Badge>
-              <span className="text-xs text-muted-foreground">{skill.steps.length} שלבים</span>
-            </div>
-            <div className="text-xs text-muted-foreground">⏱️ {skill.duration}</div>
-          </button>
-        ))}
+        {filtered.map((skill) => {
+          const cfg = CATEGORIES[skill.category];
+          return (
+            <button
+              key={skill.id}
+              onClick={() => setActiveSkill(skill)}
+              className="rounded-xl border border-border bg-card p-4 text-right flex flex-col gap-2 active:scale-95 transition-transform"
+              style={{ borderTopColor: skill.color, borderTopWidth: 3 }}
+            >
+              <div className="text-3xl">{skill.emoji}</div>
+              <div className="font-semibold text-sm leading-tight">{skill.title}</div>
 
-        {filtered.length === 0 && (
-          <div className="col-span-2 text-center py-16 text-muted-foreground">
-            <Zap className="w-12 h-12 mx-auto mb-3 opacity-30" />
-            <p>לא נמצאו כישורים</p>
-          </div>
-        )}
+              {/* Sub-tasks preview */}
+              {skill.subTasks && skill.subTasks.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {skill.subTasks.slice(0, 2).map((t, i) => (
+                    <span key={i} className="text-xs text-muted-foreground bg-muted rounded px-1 py-0.5 leading-tight">
+                      {t}
+                    </span>
+                  ))}
+                  {skill.subTasks.length > 2 && (
+                    <span className="text-xs text-muted-foreground">+{skill.subTasks.length - 2}</span>
+                  )}
+                </div>
+              )}
+
+              <div className="flex items-center justify-between mt-auto">
+                <Badge
+                  variant="secondary"
+                  className="text-xs"
+                  style={{ backgroundColor: `${skill.color}20`, color: skill.color }}
+                >
+                  {skill.difficulty}
+                </Badge>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <span>{skill.steps.length} שלבים</span>
+                  <ChevronRight className="w-3 h-3" />
+                </div>
+              </div>
+            </button>
+          );
+        })}
       </div>
+
+      {filtered.length === 0 && (
+        <div className="text-center py-12 text-muted-foreground">
+          <div className="text-4xl mb-3">🔍</div>
+          <div>לא נמצאו פעולות</div>
+        </div>
+      )}
     </div>
   );
 }

@@ -22,6 +22,7 @@ import LocationIndex from "./pages/LocationIndex";
 import SkillsIndex from "./pages/SkillsIndex";
 import PeopleHub from "./pages/PeopleHub";
 import PersonDetail from "./pages/PersonDetail";
+import VoicenotesGuide from "./pages/VoicenotesGuide";
 
 function Router() {
   const { showHelp, setShowHelp } = useKeyboardShortcuts();
@@ -47,6 +48,7 @@ function Router() {
       <Route path={"/skills"} component={SkillsIndex} />
       <Route path={"/people"} component={PeopleHub} />
       <Route path={"/people/:id"} component={PersonDetail} />
+      <Route path={"/voicenotes-guide"} component={VoicenotesGuide} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

@@ -153,6 +153,42 @@ export default function ModuleHub() {
         </button>
       </div>
 
+      {/* Third row: Voicenotes guide */}
+      <div style={{ display: "flex", gap: 10, padding: "0 16px 10px" }}>
+        <button
+          onClick={() => setLocation("/voicenotes-guide")}
+          style={{
+            flex: 1, padding: "14px 12px", borderRadius: 14,
+            background: "linear-gradient(135deg, #faf5ff, #ede9fe)",
+            border: "1.5px solid #c4b5fd",
+            cursor: "pointer", textAlign: "right", direction: "rtl",
+            display: "flex", alignItems: "center", gap: 10,
+          }}
+        >
+          <div style={{ fontSize: 28 }}>🎙️</div>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#6d28d9" }}>מדריך Voicenotes</div>
+            <div style={{ fontSize: 11, color: "#7c3aed" }}>איך לנסח הקלטות לשליפה</div>
+          </div>
+        </button>
+        <button
+          onClick={() => setLocation("/appmap")}
+          style={{
+            flex: 1, padding: "14px 12px", borderRadius: 14,
+            background: "linear-gradient(135deg, #f0fdf4, #dcfce7)",
+            border: "1.5px solid #86efac",
+            cursor: "pointer", textAlign: "right", direction: "rtl",
+            display: "flex", alignItems: "center", gap: 10,
+          }}
+        >
+          <div style={{ fontSize: 28 }}>🗺️</div>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: "#15803d" }}>מפת כלים</div>
+            <div style={{ fontSize: 11, color: "#16a34a" }}>יכולות השוואה</div>
+          </div>
+        </button>
+      </div>
+
       {/* Module list */}
       <div style={{ flex: 1, padding: "12px 16px 100px", overflowY: "auto" }}>
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>

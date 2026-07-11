@@ -381,3 +381,9 @@
 - [x] Build LocationIndex page (/locations) — where everything is stored
 - [x] Build SkillsIndex page (/skills) — visual step-by-step guides
 - [x] Add routes and quick-access buttons to ModuleHub
+
+## Voicenotes Guide + Real Taxonomy
+- [x] Replace shallow SkillsIndex with user's real Hebrew taxonomy from pasted_content.txt
+- [x] Build VoicenotesGuide page with specific phrasing patterns for each topic
+- [x] Add VoicenotesGuide route to App.tsx
+- [x] Add Voicenotes guide + AppMap buttons to ModuleHub third row
