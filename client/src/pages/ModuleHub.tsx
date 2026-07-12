@@ -1,439 +1,149 @@
-import { useState } from "react";
 import { useLocation } from "wouter";
-import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { ENTITY_TEMPLATES, type EntityTemplate } from "@/lib/entityTemplates";
 import { getLoginUrl } from "@/const";
-import { Button } from "@/components/ui/button";
-
-// Default visible modules (ordered as in the screenshot)
-const DEFAULT_MODULES = ["list", "finance", "project", "note", "task", "file", "bookmark", "contact"];
-
-function greeting(): string {
-  const h = new Date().getHours();
-  if (h < 12) return "בוקר טוב";
-  if (h < 17) return "צהריים טובים";
-  if (h < 21) return "ערב טוב";
-  return "לילה טוב";
-}
-
-function todayLabel(): string {
-  return new Date().toLocaleDateString("he-IL", { weekday: "long", day: "numeric", month: "long" });
-}
 
 export default function ModuleHub() {
   const [, setLocation] = useLocation();
   const { user, isAuthenticated } = useAuth();
-  const [browseOpen, setBrowseOpen] = useState(false);
-  const [visibleModules, setVisibleModules] = useState<string[]>(DEFAULT_MODULES);
-
-  const orderedTemplates = visibleModules
-    .map(m => ENTITY_TEMPLATES.find(t => t.moduleType === m))
-    .filter(Boolean) as EntityTemplate[];
-
-  const allTemplates = ENTITY_TEMPLATES;
 
   if (!isAuthenticated) {
     return (
-      <div style={{ minHeight: "100dvh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 32, background: "#f8fafc" }}>
-        <div style={{ fontSize: 48, marginBottom: 16 }}>🗂️</div>
-        <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8, textAlign: "center" }}>ZenCanvas</h1>
-        <p style={{ color: "#64748b", marginBottom: 32, textAlign: "center" }}>ארגן את החיים שלך במקום אחד</p>
-        <a href={getLoginUrl()} style={{ background: "#6366f1", color: "#fff", padding: "14px 32px", borderRadius: 12, textDecoration: "none", fontWeight: 600, fontSize: 16 }}>
+      <div style={{
+        minHeight: "100dvh", display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        padding: 32, background: "#0f172a",
+      }}>
+        <div style={{ fontSize: 52, marginBottom: 16 }}>🧠</div>
+        <h1 style={{ fontSize: 22, fontWeight: 800, marginBottom: 8, color: "#f1f5f9" }}>מרכז הידע</h1>
+        <p style={{ color: "#64748b", marginBottom: 32, textAlign: "center", fontSize: 14 }}>
+          Obsidian + Capacities בעברית
+        </p>
+        <a
+          href={getLoginUrl()}
+          style={{
+            background: "#6366f1", color: "#fff",
+            padding: "14px 32px", borderRadius: 12,
+            textDecoration: "none", fontWeight: 700, fontSize: 16,
+          }}
+        >
           התחבר
         </a>
       </div>
     );
   }
 
+  const name = user?.name?.split(" ")[0] ?? "";
+
   return (
-    <div style={{ minHeight: "100dvh", background: "#f8fafc", display: "flex", flexDirection: "column" }}>
-      {/* Header */}
-      <div style={{ padding: "24px 20px 8px", display: "flex", alignItems: "flex-start", justifyContent: "space-between" }}>
+    <div style={{
+      minHeight: "100dvh", background: "#0f172a",
+      display: "flex", flexDirection: "column",
+      direction: "rtl", padding: "32px 20px 40px",
+      gap: 12,
+    }}>
+
+      {/* Greeting */}
+      <div style={{ marginBottom: 8 }}>
+        <div style={{ fontSize: 13, color: "#64748b", marginBottom: 4 }}>
+          {new Date().toLocaleDateString("he-IL", { weekday: "long", day: "numeric", month: "long" })}
+        </div>
+        {name && (
+          <div style={{ fontSize: 20, fontWeight: 700, color: "#f1f5f9" }}>
+            שלום, {name}
+          </div>
+        )}
+      </div>
+
+      {/* ── MAIN TOOL ── */}
+      <button
+        onClick={() => setLocation("/knowledge")}
+        style={{
+          width: "100%", padding: "22px 20px", borderRadius: 18,
+          background: "linear-gradient(135deg, #312e81, #4338ca)",
+          border: "2px solid #6366f1",
+          cursor: "pointer", textAlign: "right",
+          display: "flex", alignItems: "center", gap: 14,
+          boxShadow: "0 4px 24px rgba(99,102,241,0.35)",
+        }}
+      >
+        <div style={{ fontSize: 36 }}>🧠</div>
         <div>
-          <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0, direction: "rtl" }}>
-            {greeting()}, {user?.name?.split(" ")[0] ?? ""}
-          </h1>
-          <p style={{ color: "#94a3b8", margin: "4px 0 0", fontSize: 14, direction: "rtl" }}>{todayLabel()}</p>
+          <div style={{ fontWeight: 800, fontSize: 18, color: "#fff" }}>מרכז הידע</div>
+          <div style={{ fontSize: 12, color: "#a5b4fc", marginTop: 2 }}>
+            Markdown · Mermaid · קישורים · AI
+          </div>
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
-          <button
-            onClick={() => setLocation("/canvas")}
-            style={{ width: 40, height: 40, borderRadius: 10, background: "#fff", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, cursor: "pointer" }}
-            title="קאנבס"
-          >
-            🗺️
-          </button>
-          <button
-            onClick={() => setLocation("/inbox")}
-            style={{ width: 40, height: 40, borderRadius: 10, background: "#fff", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, cursor: "pointer" }}
-            title="תיבת דואר"
-          >
-            🔔
-          </button>
-          <button
-            onClick={() => setLocation("/profile")}
-            style={{ width: 40, height: 40, borderRadius: 10, background: "#fff", border: "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, cursor: "pointer" }}
-            title="פרופיל"
-          >
-            👤
-          </button>
+        <div style={{ marginRight: "auto", fontSize: 20, color: "#6366f1" }}>←</div>
+      </button>
+
+      {/* Graph shortcut */}
+      <button
+        onClick={() => setLocation("/knowledge/graph")}
+        style={{
+          width: "100%", padding: "14px 20px", borderRadius: 14,
+          background: "#1e1b4b", border: "1px solid #3730a3",
+          cursor: "pointer", textAlign: "right",
+          display: "flex", alignItems: "center", gap: 12,
+        }}
+      >
+        <div style={{ fontSize: 24 }}>🕸️</div>
+        <div style={{ fontSize: 14, fontWeight: 600, color: "#a5b4fc" }}>גרף קשרים</div>
+      </button>
+
+      {/* Divider */}
+      <div style={{ height: 1, background: "#1e293b", margin: "8px 0" }} />
+
+      {/* Bureaucracy */}
+      <button
+        onClick={() => setLocation("/bureaucracy")}
+        style={{
+          width: "100%", padding: "16px 20px", borderRadius: 14,
+          background: "#1c0a0a", border: "1px solid #7f1d1d",
+          cursor: "pointer", textAlign: "right",
+          display: "flex", alignItems: "center", gap: 12,
+        }}
+      >
+        <div style={{ fontSize: 24 }}>🏛️</div>
+        <div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: "#fca5a5" }}>בירוקרטיה</div>
+          <div style={{ fontSize: 11, color: "#ef4444" }}>161 · ביטוח לאומי · מס הכנסה</div>
         </div>
-      </div>
+      </button>
 
-      {/* Quick Access Row 1: People + Skills */}
-      <div style={{ padding: "8px 16px 4px", display: "flex", gap: 10 }}>
-        <button
-          onClick={() => setLocation("/people")}
-          style={{
-            flex: 1, padding: "14px 12px", borderRadius: 14,
-            background: "linear-gradient(135deg, #fef3c7, #fde68a)",
-            border: "1.5px solid #fcd34d",
-            cursor: "pointer", textAlign: "right", direction: "rtl",
-            display: "flex", alignItems: "center", gap: 10,
-          }}
-        >
-          <div style={{ fontSize: 28 }}>👥</div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#92400e" }}>אנשים</div>
-            <div style={{ fontSize: 11, color: "#78350f" }}>אלי · רופאים · גורמים</div>
-          </div>
-        </button>
-        <button
-          onClick={() => setLocation("/skills")}
-          style={{
-            flex: 1, padding: "14px 12px", borderRadius: 14,
-            background: "linear-gradient(135deg, #ecfdf5, #d1fae5)",
-            border: "1.5px solid #6ee7b7",
-            cursor: "pointer", textAlign: "right", direction: "rtl",
-            display: "flex", alignItems: "center", gap: 10,
-          }}
-        >
-          <div style={{ fontSize: 28 }}>⚡</div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#065f46" }}>מה אני יודע</div>
-            <div style={{ fontSize: 11, color: "#047857" }}>מדריכים שלב-אחר-שלב</div>
-          </div>
-        </button>
-      </div>
-
-      {/* Quick Access Row 2: Daily Tracker + Locations + AppMap */}
-      <div style={{ padding: "4px 16px 4px", display: "flex", gap: 10 }}>
-        <button
-          onClick={() => setLocation("/tracker")}
-          style={{
-            flex: 1, padding: "14px 12px", borderRadius: 14,
-            background: "linear-gradient(135deg, #fdf2f8, #fce7f3)",
-            border: "1.5px solid #f9a8d4",
-            cursor: "pointer", textAlign: "right", direction: "rtl",
-            display: "flex", alignItems: "center", gap: 10,
-          }}
-        >
-          <div style={{ fontSize: 28 }}>📋</div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#be185d" }}>יומן יומי</div>
-            <div style={{ fontSize: 11, color: "#9d174d" }}>רני · פיצ' · בריאות · כסף</div>
-          </div>
-        </button>
-        <button
-          onClick={() => setLocation("/locations")}
-          style={{
-            flex: 1, padding: "14px 12px", borderRadius: 14,
-            background: "linear-gradient(135deg, #f0f9ff, #e0f2fe)",
-            border: "1.5px solid #7dd3fc",
-            cursor: "pointer", textAlign: "right", direction: "rtl",
-            display: "flex", alignItems: "center", gap: 10,
-          }}
-        >
-          <div style={{ fontSize: 28 }}>📍</div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#0369a1" }}>איפה הכל</div>
-            <div style={{ fontSize: 11, color: "#0284c7" }}>מיקום כל מידע</div>
-          </div>
-        </button>
-      </div>
-
-      {/* Row: Brain + Bureaucracy */}
-      <div style={{ padding: "4px 16px 4px", display: "flex", gap: 10 }}>
-        <button
-          onClick={() => setLocation("/brain")}
-          style={{
-            flex: 1, padding: "14px 12px", borderRadius: 14,
-            background: "linear-gradient(135deg, #1e293b, #334155)",
-            border: "1.5px solid #475569",
-            cursor: "pointer", textAlign: "right", direction: "rtl",
-            display: "flex", alignItems: "center", gap: 10,
-          }}
-        >
-          <div style={{ fontSize: 28 }}>🧠</div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#f1f5f9" }}>המוח היומי</div>
-            <div style={{ fontSize: 11, color: "#94a3b8" }}>עכשיו · פיצ' · הערה</div>
-          </div>
-        </button>
-        <button
-          onClick={() => setLocation("/bureaucracy")}
-          style={{
-            flex: 1, padding: "14px 12px", borderRadius: 14,
-            background: "linear-gradient(135deg, #fef2f2, #fee2e2)",
-            border: "1.5px solid #fca5a5",
-            cursor: "pointer", textAlign: "right", direction: "rtl",
-            display: "flex", alignItems: "center", gap: 10,
-          }}
-        >
-          <div style={{ fontSize: 28 }}>🏛️</div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#991b1b" }}>בירוקרטיה</div>
-            <div style={{ fontSize: 11, color: "#dc2626" }}>161 · ביטוח לאומי · מס</div>
-          </div>
-        </button>
-      </div>
-
-      {/* Row: Finance Snapshot */}
-      <div style={{ padding: "4px 16px 4px", display: "flex", gap: 10 }}>
-        <button
-          onClick={() => setLocation("/finance-snapshot")}
-          style={{
-            flex: 1, padding: "14px 12px", borderRadius: 14,
-            background: "linear-gradient(135deg, #f0fdf4, #dcfce7)",
-            border: "1.5px solid #86efac",
-            cursor: "pointer", textAlign: "right", direction: "rtl",
-            display: "flex", alignItems: "center", gap: 10,
-          }}
-        >
-          <div style={{ fontSize: 28 }}>💰</div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#15803d" }}>תמונת מצב כספית</div>
-            <div style={{ fontSize: 11, color: "#16a34a" }}>2,800₪ קצבה · חובות · פיצויים</div>
-          </div>
-        </button>
-      </div>
-
-      {/* Row: Knowledge Hub — the main tool */}
-      <div style={{ padding: "4px 16px 4px", display: "flex", gap: 10 }}>
-        <button
-          onClick={() => setLocation("/knowledge")}
-          style={{
-            flex: 1, padding: "18px 16px", borderRadius: 16,
-            background: "linear-gradient(135deg, #312e81, #4338ca)",
-            border: "2px solid #6366f1",
-            cursor: "pointer", textAlign: "right", direction: "rtl",
-            display: "flex", alignItems: "center", gap: 12,
-            boxShadow: "0 4px 16px rgba(99,102,241,0.3)",
-          }}
-        >
-          <div style={{ fontSize: 32 }}>🧠</div>
-          <div>
-            <div style={{ fontWeight: 800, fontSize: 16, color: "#fff" }}>מרכז הידע</div>
-            <div style={{ fontSize: 12, color: "#a5b4fc" }}>Obsidian + Capacities בעברית</div>
-            <div style={{ fontSize: 11, color: "#818cf8", marginTop: 2 }}>Markdown · Mermaid · קישורים · AI</div>
-          </div>
-        </button>
-        <button
-          onClick={() => setLocation("/knowledge/graph")}
-          style={{
-            padding: "18px 14px", borderRadius: 16,
-            background: "linear-gradient(135deg, #1e1b4b, #312e81)",
-            border: "2px solid #4338ca",
-            cursor: "pointer", textAlign: "center",
-            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4,
-          }}
-        >
-          <div style={{ fontSize: 28 }}>🕸️</div>
-          <div style={{ fontSize: 11, color: "#a5b4fc", fontWeight: 700 }}>גרף</div>
-        </button>
-      </div>
-
-      {/* Third row: Voicenotes guide */}
-      <div style={{ display: "flex", gap: 10, padding: "0 16px 10px" }}>
-        <button
-          onClick={() => setLocation("/voicenotes-guide")}
-          style={{
-            flex: 1, padding: "14px 12px", borderRadius: 14,
-            background: "linear-gradient(135deg, #faf5ff, #ede9fe)",
-            border: "1.5px solid #c4b5fd",
-            cursor: "pointer", textAlign: "right", direction: "rtl",
-            display: "flex", alignItems: "center", gap: 10,
-          }}
-        >
-          <div style={{ fontSize: 28 }}>🎙️</div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#6d28d9" }}>מדריך Voicenotes</div>
-            <div style={{ fontSize: 11, color: "#7c3aed" }}>איך לנסח הקלטות לשליפה</div>
-          </div>
-        </button>
-        <button
-          onClick={() => setLocation("/appmap")}
-          style={{
-            flex: 1, padding: "14px 12px", borderRadius: 14,
-            background: "linear-gradient(135deg, #f0fdf4, #dcfce7)",
-            border: "1.5px solid #86efac",
-            cursor: "pointer", textAlign: "right", direction: "rtl",
-            display: "flex", alignItems: "center", gap: 10,
-          }}
-        >
-          <div style={{ fontSize: 28 }}>🗺️</div>
-          <div>
-            <div style={{ fontWeight: 700, fontSize: 14, color: "#15803d" }}>מפת כלים</div>
-            <div style={{ fontSize: 11, color: "#16a34a" }}>יכולות השוואה</div>
-          </div>
-        </button>
-      </div>
-
-      {/* Module list */}
-      <div style={{ flex: 1, padding: "12px 16px 100px", overflowY: "auto" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {orderedTemplates.map(template => (
-            <ModuleCard
-              key={template.moduleType}
-              template={template}
-              onClick={() => setLocation(`/module/${template.moduleType}`)}
-            />
-          ))}
+      {/* Finance */}
+      <button
+        onClick={() => setLocation("/finance-snapshot")}
+        style={{
+          width: "100%", padding: "16px 20px", borderRadius: 14,
+          background: "#071a0f", border: "1px solid #14532d",
+          cursor: "pointer", textAlign: "right",
+          display: "flex", alignItems: "center", gap: 12,
+        }}
+      >
+        <div style={{ fontSize: 24 }}>💰</div>
+        <div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: "#86efac" }}>מצב כספי</div>
+          <div style={{ fontSize: 11, color: "#4ade80" }}>2,800₪ קצבה · חובות · פיצויים</div>
         </div>
-      </div>
+      </button>
 
-      {/* Browse Modules button */}
-      <div style={{ position: "fixed", bottom: 24, left: "50%", transform: "translateX(-50%)", zIndex: 50 }}>
-        <button
-          onClick={() => setBrowseOpen(true)}
-          style={{
-            background: "#1e293b",
-            color: "#fff",
-            border: "none",
-            borderRadius: 28,
-            padding: "14px 28px",
-            fontSize: 15,
-            fontWeight: 600,
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            boxShadow: "0 8px 32px rgba(30,41,59,0.25)",
-            direction: "rtl",
-          }}
-        >
-          <span style={{ fontSize: 18 }}>+</span>
-          עיין במודולים
-        </button>
-      </div>
+      {/* Daily Brain */}
+      <button
+        onClick={() => setLocation("/brain")}
+        style={{
+          width: "100%", padding: "16px 20px", borderRadius: 14,
+          background: "#0c1220", border: "1px solid #1e3a5f",
+          cursor: "pointer", textAlign: "right",
+          display: "flex", alignItems: "center", gap: 12,
+        }}
+      >
+        <div style={{ fontSize: 24 }}>⚡</div>
+        <div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: "#93c5fd" }}>עכשיו</div>
+          <div style={{ fontSize: 11, color: "#60a5fa" }}>הצעד הבא · פיצ' · הערה</div>
+        </div>
+      </button>
 
-      {/* Browse Modules bottom sheet */}
-      {browseOpen && (
-        <>
-          <div
-            style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", zIndex: 100 }}
-            onClick={() => setBrowseOpen(false)}
-          />
-          <div style={{
-            position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 101,
-            background: "#fff", borderRadius: "20px 20px 0 0",
-            padding: "20px 16px 40px",
-            maxHeight: "80dvh", overflowY: "auto",
-          }}>
-            <div style={{ width: 40, height: 4, background: "#e2e8f0", borderRadius: 2, margin: "0 auto 20px" }} />
-            <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 16px", direction: "rtl" }}>כל המודולים</h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {allTemplates.map(template => {
-                const active = visibleModules.includes(template.moduleType);
-                return (
-                  <div
-                    key={template.moduleType}
-                    style={{
-                      display: "flex", alignItems: "center", justifyContent: "space-between",
-                      padding: "14px 16px", borderRadius: 14,
-                      background: active ? "#f0fdf4" : "#f8fafc",
-                      border: `1.5px solid ${active ? "#86efac" : "#e2e8f0"}`,
-                      cursor: "pointer",
-                    }}
-                    onClick={() => {
-                      setVisibleModules(prev =>
-                        prev.includes(template.moduleType)
-                          ? prev.filter(m => m !== template.moduleType)
-                          : [...prev, template.moduleType]
-                      );
-                    }}
-                  >
-                    <div style={{ display: "flex", alignItems: "center", gap: 12, direction: "rtl" }}>
-                      <span style={{ fontSize: 26 }}>{template.icon}</span>
-                      <div>
-                        <div style={{ fontWeight: 600, fontSize: 15 }}>{template.labelHe}</div>
-                        <div style={{ color: "#94a3b8", fontSize: 12 }}>{template.descriptionHe}</div>
-                      </div>
-                    </div>
-                    <div style={{
-                      width: 24, height: 24, borderRadius: "50%",
-                      background: active ? "#22c55e" : "#e2e8f0",
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      color: "#fff", fontSize: 14, fontWeight: 700,
-                    }}>
-                      {active ? "✓" : "+"}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <button
-              onClick={() => setBrowseOpen(false)}
-              style={{ width: "100%", marginTop: 20, padding: "14px", borderRadius: 12, background: "#6366f1", color: "#fff", border: "none", fontWeight: 600, fontSize: 15, cursor: "pointer" }}
-            >
-              סגור
-            </button>
-          </div>
-        </>
-      )}
     </div>
-  );
-}
-
-function ModuleCard({ template, onClick }: { template: EntityTemplate; onClick: () => void }) {
-  const { data: countData } = trpc.nodes.list.useQuery(
-    { type: template.moduleType },
-    { staleTime: 30_000 }
-  );
-  const count = Array.isArray(countData) ? countData.length : 0;
-
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "18px 20px",
-        borderRadius: 16,
-        background: "#ffffff",
-        border: "1px solid #e2e8f0",
-        cursor: "pointer",
-        textAlign: "right",
-        direction: "rtl",
-        boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-        transition: "transform 0.1s ease, box-shadow 0.1s ease",
-      }}
-      onPointerDown={e => {
-        (e.currentTarget as HTMLButtonElement).style.transform = "scale(0.97)";
-      }}
-      onPointerUp={e => {
-        (e.currentTarget as HTMLButtonElement).style.transform = "scale(1)";
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-        <div style={{
-          width: 44, height: 44, borderRadius: 12,
-          background: `${template.accentColor}18`,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: 22,
-        }}>
-          {template.icon}
-        </div>
-        <div>
-          <div style={{ fontWeight: 600, fontSize: 16, color: "#1e293b" }}>{template.labelHe}</div>
-          {count > 0 && (
-            <div style={{ color: "#94a3b8", fontSize: 12, marginTop: 2 }}>{count} פריטים</div>
-          )}
-        </div>
-      </div>
-      <span style={{ color: "#cbd5e1", fontSize: 20 }}>›</span>
-    </button>
   );
 }
