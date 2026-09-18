@@ -1,6 +1,6 @@
 {
-  "name": "ZenCanvas",
-  "short_name": "ZenCanvas",
+  "name": "HebrewFlow",
+  "short_name": "HebrewFlow",
   "description": "קאנבס ויזואלי לניהול חיים — משימות, פתקים, תמונות ומסמכים",
   "start_url": "/canvas",
   "display": "standalone",
