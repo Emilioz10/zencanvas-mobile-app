@@ -1,67 +1,46 @@
-import { trpc } from "@/lib/trpc";
-import { UNAUTHED_ERR_MSG } from '@shared/const';
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink, TRPCClientError } from "@trpc/client";
-import { createRoot } from "react-dom/client";
-import superjson from "superjson";
-import App from "./App";
-import { getLoginUrl } from "./const";
-import "./index.css";
-import "./lib/i18n";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Route, Switch } from "wouter";
+import ErrorBoundary from "./components/ErrorBoundary";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
-// Set initial language and direction
-const language = localStorage.getItem('language') || 'en';
-document.documentElement.lang = language;
-document.documentElement.dir = language === 'he' ? 'rtl' : 'ltr';
+// כאן אנחנו מייבאים את הדפים שלך
+import Dashboard from "./pages/Dashboard";
+import Canvas from "./pages/Canvas";
+import Inbox from "./pages/Inbox";
+import Tasks from "./pages/Tasks";
+import Timeline from "./pages/Timeline";
+import PeopleHub from "./pages/PeopleHub";
+import FinanceSnapshot from "./pages/FinanceSnapshot";
+import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+function Router() {
+  return (
+    <Switch>
+      <Route path="/" component={Dashboard} />
+      <Route path="/dashboard" component={Dashboard} />
+      <Route path="/canvas" component={Canvas} />
+      <Route path="/inbox" component={Inbox} />
+      <Route path="/tasks" component={Tasks} />
+      <Route path="/timeline" component={Timeline} />
+      <Route path="/people" component={PeopleHub} />
+      <Route path="/finance" component={FinanceSnapshot} />
+      <Route component={NotFound} />
+    </Switch>
+  );
+}
 
-const redirectToLoginIfUnauthorized = (error: unknown) => {
-  if (!(error instanceof TRPCClientError)) return;
-  if (typeof window === "undefined") return;
+function App() {
+  return (
+    <ErrorBoundary>
+      <ThemeProvider defaultTheme="dark">
+        <TooltipProvider>
+          <Toaster />
+          <Router />
+        </TooltipProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
+  );
+}
 
-  const isUnauthorized = error.message === UNAUTHED_ERR_MSG;
-
-  if (!isUnauthorized) return;
-
-  window.location.href = getLoginUrl();
-};
-
-queryClient.getQueryCache().subscribe(event => {
-  if (event.type === "updated" && event.action.type === "error") {
-    const error = event.query.state.error;
-    redirectToLoginIfUnauthorized(error);
-    console.error("[API Query Error]", error);
-  }
-});
-
-queryClient.getMutationCache().subscribe(event => {
-  if (event.type === "updated" && event.action.type === "error") {
-    const error = event.mutation.state.error;
-    redirectToLoginIfUnauthorized(error);
-    console.error("[API Mutation Error]", error);
-  }
-});
-
-const trpcClient = trpc.createClient({
-  links: [
-    httpBatchLink({
-      url: "/api/trpc",
-      transformer: superjson,
-      fetch(input, init) {
-        return globalThis.fetch(input, {
-          ...(init ?? {}),
-          credentials: "include",
-        });
-      },
-    }),
-  ],
-});
-
-createRoot(document.getElementById("root")!).render(
-  <trpc.Provider client={trpcClient} queryClient={queryClient}>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
-  </trpc.Provider>
-);
+export default App;
